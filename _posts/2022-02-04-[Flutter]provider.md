@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "[Flutter]provider 사용법"
+title: "[Flutter] provider 패턴"
 date: 2022-02-04 21:11
 categories: Flutter
 ---
@@ -30,11 +30,24 @@ provider는 플러터 애플리케이션을 구성하는 위젯들의 상태(데
 
 # provider 사용
 
+provider는 데이터를 생상하는 부분과 소비하는 부분으로 나뉜다고 한다.
 
+> 생산한다는 개념이 잘 와닿지 않는다면 provider를 직역한 의미인 ''제공한다'' 라는의미로 받아들여도 좋을 것 같다.
 
+일단 provider를 사용하기 위해 `pubspec.yaml` 파일에 의존성 추가를 해준다.
 
+```yaml
+dependencies:
+  provider: <last version>
+```
 
+**데이터 관리**
 
+먼저 위젯들과 공유할 데이터를 관리하기 위한 클래스를 생성하고 위젯의 상태를 변화시키는 함수들을 멤버함수로 선언해준다.
+
+이 때  클래스는 `ChangeNotifier`를 상속하여 값의 변화를 인식할 수 있도록 한다.
+
+또한 값의 변화를 인식하여 프레임워크에 전달하고 UI를 새로 갱신하기 위해 상태변경을 수행하는 함수의 내부에서 상태변경 후에 꼭  `notifyListeners()`를 실행해주어야 한다.
 
 ```dart
 import 'package:flutter/material.dart';
