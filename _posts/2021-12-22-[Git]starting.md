@@ -30,7 +30,7 @@ Git을 설치하기 위해 [git-scm.com/downloads](https://git-scm.com/downloads
 
 - `git clone [원격 저장소 주소]`
 
-  
+  원격 저장소의 내용을 복제하여 새로운 로컬 저장소를 생성된다.
 
 - `git status`
 
@@ -38,19 +38,21 @@ Git을 설치하기 위해 [git-scm.com/downloads](https://git-scm.com/downloads
 
 - `git add [파일 경로] ` 
 
-  
+  stage area로 업로드
 
 - `git commit`
 
-  
+  로컬 저장소에 저장
 
 - `git push`
+
+  원격 저장소에 업로드
 
   
 
 - `git pull`
 
-  
+  원격 저장소의 내용을 로컬저장소로 불러온다. 기존의 로컬저장소에 변경된 내용이 병합됨
 
 - `git log`
 
