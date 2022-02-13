@@ -41,7 +41,7 @@ dependencies:
   provider: <last version>
 ```
 
-**데이터 관리**
+**데이터 생산**
 
 먼저 위젯들과 공유할 데이터를 관리하기 위한 클래스를 생성하고 위젯의 상태를 변화시키는 함수들을 멤버함수로 선언해준다.
 
@@ -68,11 +68,13 @@ class Value extends ChangeNotifier {
 }
 ```
 
+**데이터 전달**
 
+`ChangeNotifier`를 상속받은 클래스에서 발생한 데이터의 변화를 전달받고, UI에 반영시키기 위해 앱을 구성하는 프로젝트의 최상위 위젯인 `MyApp`을 `ChangeNotifierProvider`로 감싸준다.
 
+이 때 `MultiProvider`를 통해 여러 개의 provider에서 일어나는 변화를 전달받을 수 있다.
 
-
-
+> `ChangeNotifier`를 상속받은 클래스에서 `ChangeNotifierProvider`로 데이터 변화를 전달하는 것은 `notifyListeners()`를 통해 이루어진다.
 
 ```dart
 void main() {
@@ -87,11 +89,62 @@ void main() {
 }
 ```
 
+**데이터 소비**
 
+데이터를 소비한다는 말은 provider의 데이터 값을 변경하거나 화면에 보여주는 것을 의미한다.
 
+provider에서 관리하는 값에 변화를 주기 위해서는 아래와 같이 `Provider.of(context)`로 `ChangeNotifier`를 상속받은 클래스의 데이터를 사용하거나 변경할 수 있다.
 
+```dart
+class Home extends StatelessWidget {
+  const Home({Key? key}) : super(key: key);
 
+  @override
+  Widget build(BuildContext context) {
+    Value _value = Provider.of<Value>(context, listen: false);
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('provider study'),
+      ),
+      body: Center(
+        child: Column(mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const ValueWidget(),
+            const SizedBox(
+              height: 50,
+            ),
+            TextButton(
+                onPressed: () => Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const Next())),
+                child: const Text('Go to next'))
+          ],
+        ),
+      ),
+      floatingActionButton: SizedBox(
+        width: 100,
+        child: Row(
+          children: [
+            IconButton(
+              icon: const Icon(Icons.add),
+              onPressed: () {
+                _value.add();
+              },
+            ),
+            IconButton(
+              icon: const Icon(Icons.remove),
+              onPressed: () {
+                _value.remove();
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+```
 
+또한 `Consumer`를 통해서도 `ChangeNotifier`를 상속받은 클래스의 데이터를 사용하거나 변경할 수 있다.
 
 ```dart
 class ValueWidget extends StatelessWidget {
