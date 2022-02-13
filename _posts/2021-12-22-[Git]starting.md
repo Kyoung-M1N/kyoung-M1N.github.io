@@ -28,13 +28,13 @@ Git을 설치하기 위해 [git-scm.com/downloads](https://git-scm.com/downloads
 
   현재 디렉토리에 로컬 깃 저장소를 생성한다. 이 때 해당 디렉토리에는 .git디렉토리가 생성된다.
 
-- `git clone [원격 저장소 주소]`
+- `git clone [원격 저장소 주소] [로컬 디렉토리 경로]`
 
-  원격 저장소의 내용을 복제하여 새로운 로컬 저장소를 생성된다.
+  명령어에 입력된 주소에 해당하는 원격 저장소의 복사본을 만들어 현재 디렉토리 로컬 깃 저장소를 생성한다. 이 때 생성된 로컬 저장소는 원격 저장소와 자동으로 연결된다.
 
 - `git status`
 
-  현재 디렉토리의 git 상태를 출력한다.
+  현재 디렉토리에 있는 파일들의 상태를 확인한다. 작업이 이루어지는 디렉토리와 로컬 깃 저장소를 비교하여 파일의 수정여부나 커밋상태가 표시된다.
 
 - `git add [파일 경로] ` 
 
@@ -58,7 +58,12 @@ Git을 설치하기 위해 [git-scm.com/downloads](https://git-scm.com/downloads
 
   `--all --decorate --oneline --graph`
   
-  
+
+
+
+> 자세한 내용은 `git`명령어 또는 `-h`옵션을 통해 확인 가능하다.
+
+
 
 ![files](/public/img/git-structure.JPG)
 
@@ -80,3 +85,4 @@ Git을 설치하기 위해 [git-scm.com/downloads](https://git-scm.com/downloads
 
 [AWS CodeCommit](https://docs.aws.amazon.com/ko_kr/codecommit/latest/userguide/how-to-basic-git.html)
 
+https://subicura.com/git/guide/github.html#git-clone-%E1%84%8B%E1%85%AF%E1%86%AB%E1%84%80%E1%85%A7%E1%86%A8-%E1%84%8C%E1%85%A5%E1%84%8C%E1%85%A1%E1%86%BC%E1%84%89%E1%85%A9-%E1%84%87%E1%85%A9%E1%86%A8%E1%84%8C%E1%85%A6
