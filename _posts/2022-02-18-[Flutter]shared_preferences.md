@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "[Flutter] shared_preferences"
-date: 2022-02-18 21:11
+date: 2022-02-18 20:11
 categories: Flutter
 ---
 # shared preferences?

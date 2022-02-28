@@ -1,6 +1,7 @@
 ---
+
 layout: post
-title: "[Flutter] provider 패턴"
+title: "[Flutter] provider"
 date: 2022-02-04 21:11
 categories: Flutter
 ---
@@ -49,6 +50,21 @@ dependencies:
 
 또한 값의 변화를 인식하여 프레임워크에 전달하고 UI를 새로 갱신하기 위해 상태변경을 수행하는 함수의 내부에서 상태변경 후에 꼭  `notifyListeners()`를 실행해주어야 한다.
 
+
+
+```dart
+Provider<int>.value(
+      value: 5,
+      child: Container(),
+)
+```
+
+
+
+
+
+
+
 ```dart
 import 'package:flutter/material.dart';
 
@@ -94,6 +110,14 @@ void main() {
 데이터를 소비한다는 말은 provider의 데이터 값을 변경하거나 화면에 보여주는 것을 의미한다.
 
 provider에서 관리하는 값에 변화를 주기 위해서는 아래와 같이 `Provider.of(context)`로 `ChangeNotifier`를 상속받은 클래스의 데이터를 사용하거나 변경할 수 있다.
+
+
+
+```dart
+var data = Provider.of<int>(context)
+```
+
+
 
 ```dart
 class Home extends StatelessWidget {

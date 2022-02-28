@@ -106,7 +106,7 @@ flutter pub publish
 
 아래의 링크는 위의 과정에 따라 실제로 패키지를 만들어서 배포해본 결과물이다.
 
-[pub.dev : cotten_candy_ui](https://pub.dev/packages/cotten_candy_ui)
+[pub.dev : cotton_candy_ui](https://pub.dev/packages/cotton_candy_ui)
 
 
 
