@@ -38,7 +38,7 @@ Git을 설치하기 위해 [git-scm.com/downloads](https://git-scm.com/downloads
 
 - `git add [파일 경로] ` 
 
-  stage area로 업로드
+  로컬 깃 저장소에 포함된 파일들의 현재 상태를 추적한다. stage area로 업로드
 
 - `git commit`
 
