@@ -38,38 +38,35 @@ Git을 설치하기 위해 [git-scm.com/downloads](https://git-scm.com/downloads
 
 - `git add [파일 경로] ` 
 
-  로컬 깃 저장소에 포함된 파일들의 현재 상태를 추적한다. stage area로 업로드
+  로컬 깃 저장소에 포함된 파일들의 현재 상태를 추적하여 인덱스에 저장한다. 이 때 `-A`옵션이나 파일경로로 `.`을 입력하면 현재 디렉토리의 모든 파일에 대해 `add`명령을 실행할 수 있다. 구조적으로 보자면 현재 깃 저장소의 스냅샷을 stage area로 업로드하는 과정이다.
 
 - `git commit`
 
-  로컬 저장소에 저장
+  현재 인덱스에 추가된 변경사항들을 로컬 저장소의 변경이력에 추가한다. 주로 `-m`옵션을 통해 해당 커밋에 대한 메시지를 남긴다.
 
 - `git push`
 
-  원격 저장소에 업로드
-
-  
+  원격 저장소에 로컬 저장소의 변경 이력을 업로드한다.  `-f`옵션을 통해 conflict상태에서 강제로 `push`를 실행할 수 있다. `push`를 통해 업로드된 파일은 github에서 열람 가능하다.
 
 - `git pull`
 
-  원격 저장소의 내용을 로컬저장소로 불러온다. 기존의 로컬저장소에 변경된 내용이 병합됨
+  원격 저장소의 내용을 로컬저장소로 불러온다. 기존의 로컬저장소의 내용이 변경된 원격 저장소의 내용과 병합된다. `--ff`옵션을 통해 conflict상태에서 강제로 `pull`을 실행할 수 있다.
 
 - `git log`
 
-  `--all --decorate --oneline --graph`
+  현재 깃 저장소의 변경 이력들을 모두 표시한다. `--all --decorate --oneline --graph`옵션을 통해 시각적으로 예쁜(?)그래프로 로그를 확인할 수 있다.
+  
   
 
-
+>`push`에서의 `-f`옵션과 `pull`에서의 `--ff`옵션은 변경 전 문서의 내용이나 데이터가 손상, 유실될 위험이 있다.
 
 > 자세한 내용은 `git`명령어 또는 `-h`옵션을 통해 확인 가능하다.
 
 
 
+시각적으로 명령어의 동작과 깃 저장소의 구조를 그려보면 아래와 같다.(개인적인 이해를 바탕으로 그린 거라 정확하지는 않을 수도...)
+
 ![files](/public/img/git-structure.JPG)
-
-
-
-
 
 
 
@@ -85,4 +82,5 @@ Git을 설치하기 위해 [git-scm.com/downloads](https://git-scm.com/downloads
 
 [AWS CodeCommit](https://docs.aws.amazon.com/ko_kr/codecommit/latest/userguide/how-to-basic-git.html)
 
-https://subicura.com/git/guide/github.html#git-clone-%E1%84%8B%E1%85%AF%E1%86%AB%E1%84%80%E1%85%A7%E1%86%A8-%E1%84%8C%E1%85%A5%E1%84%8C%E1%85%A1%E1%86%BC%E1%84%89%E1%85%A9-%E1%84%87%E1%85%A9%E1%86%A8%E1%84%8C%E1%85%A6
+[subicura.com](https://subicura.com/git/guide/github.html#git-clone-%E1%84%8B%E1%85%AF%E1%86%AB%E1%84%80%E1%85%A7%E1%86%A8-%E1%84%8C%E1%85%A5%E1%84%8C%E1%85%A1%E1%86%BC%E1%84%89%E1%85%A9-%E1%84%87%E1%85%A9%E1%86%A8%E1%84%8C%E1%85%A6)
+
