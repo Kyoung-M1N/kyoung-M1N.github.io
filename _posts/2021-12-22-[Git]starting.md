@@ -82,5 +82,5 @@ Git을 설치하기 위해 [git-scm.com/downloads](https://git-scm.com/downloads
 
 [AWS CodeCommit](https://docs.aws.amazon.com/ko_kr/codecommit/latest/userguide/how-to-basic-git.html)
 
-[subicura.com](https://subicura.com/git/guide/github.html#git-clone-%E1%84%8B%E1%85%AF%E1%86%AB%E1%84%80%E1%85%A7%E1%86%A8-%E1%84%8C%E1%85%A5%E1%84%8C%E1%85%A1%E1%86%BC%E1%84%89%E1%85%A9-%E1%84%87%E1%85%A9%E1%86%A8%E1%84%8C%E1%85%A6)
+[subicura.com](https://subicura.com/git/guide/basic.html#git-init-저장소-만들기)
 
