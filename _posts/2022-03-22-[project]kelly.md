@@ -6,7 +6,7 @@ categories: Project
 ---
 # Summary
 
-Kelly 프로젝트는 아침 출근길을 도와주는 "Shiban" 앱을 만들기 위한 프로젝트
+Kelly 프로젝트는 아침 출근길을 도와주는 "Shiban" 앱을 만들기 위한 프로젝트이다.
 
 등록된 아침 출근시간과 출근 경로를 바탕으로 실시간 날씨 정보와 대중교통의 도착정보를 푸시알림과 TTS로 제공
 
@@ -26,15 +26,13 @@ Kelly 프로젝트는 아침 출근길을 도와주는 "Shiban" 앱을 만들기
 
 
 
-**예시 코드**
+
 
 
 
 -----------------------
 
-##### 참고자료 : 
+**프로젝트 주소**
 
-[flutter-ko.dev](https://flutter-ko.dev/docs/cookbook/persistence/key-value)
-
-[pub.dev : shared_preferences](https://nomad-programmer.tistory.com/263)
+https://github.com/Team-Kelly/kelly-app
 
