@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "[Git & GitHub]Git 준비"
+title: "[Git & GitHub] 개념 준비"
 date: 2021-12-19 19:31
 categories: Git
 ---

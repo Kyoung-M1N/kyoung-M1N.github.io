@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "[Flutter]패키지 만들기"
+title: "[Flutter] 패키지 만들기"
 date: 2022-01-24 21:11
 categories: Flutter
 ---

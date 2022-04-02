@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "[Spring]준비"
+title: "[Spring] 개념 준비"
 date: 2022-01-19 19:31
 categories: Spring
 ---

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "[Git & GitHub]세분화"
+title: "[Git & GitHub] 작업 분기"
 date: 2022-01-05 19:31
 categories: Git
 ---

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "[Spring]시작"
+title: "[Spring] 시작"
 date: 2022-02-02 19:33
 categories: Spring
 ---

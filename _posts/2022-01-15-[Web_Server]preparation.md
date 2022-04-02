@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "[Web_Server]준비"
+title: "[Web_Server] 준비"
 date: 2022-01-15 19:20
 category: Web_Server
 ---

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "[Git & GitHub]Git 시작"
+title: "[Git & GitHub] 기초 명령어와 구조"
 date: 2021-12-22 19:31
 categories: Git
 ---
