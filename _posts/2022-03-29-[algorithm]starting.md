@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "[Algotithm] Data Structure"
+title: "[Algotithm] 자료구조와 알고리즘 인트로"
 date: 2022-03-29 20:11
 categories: Algotithm
 ---
@@ -17,6 +17,8 @@ categories: Algotithm
 > ### 시간복잡도?
 >
 > 모든 알고리즘은 입력되는 데이터의 크기 또는 갯수에 따라 계산 횟수와 수행 시간이 크게 달라지게 된다. 입력받는 데이터의 크기에 따른 알고리즘의 수행시간의 변화가 시간복잡도이다.
+>
+> 시간복잡도는 정확한 측정이 어렵기 때문에 보통 Big O 표기법을 이용하여 표시한다.
 
 ### 선형 자료구조
 

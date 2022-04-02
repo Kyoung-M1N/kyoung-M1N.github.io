@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "[Algotithm] Linear Data Structure"
+title: "[Algotithm] 선형 자료구조"
 date: 2022-04-01 20:11
 categories: Algotithm
 ---
