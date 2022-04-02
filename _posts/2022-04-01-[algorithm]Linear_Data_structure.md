@@ -1,8 +1,8 @@
 ---
 layout: post
-title: "[Algotithm] 선형 자료구조"
+title: "[Algorithm] 선형 자료구조"
 date: 2022-04-01 20:11
-categories: Algotithm
+categories: Algorithm
 ---
 # 선형 자료구조
 

@@ -1,8 +1,8 @@
 ---
 layout: post
-title: "[Algotithm] 자료구조와 알고리즘 인트로"
+title: "[Algorithm] 자료구조와 알고리즘 인트로"
 date: 2022-03-29 20:11
-categories: Algotithm
+categories: Algorithm
 ---
 # 자료구조
 
