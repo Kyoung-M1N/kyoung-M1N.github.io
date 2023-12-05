@@ -1,11 +1,11 @@
 ---
-title: 스프링 시작하기
+title: [Spring]스프링 시작하기
 author: kymin
 date: 2023-11-31 19:31
 categories: [Spring]
-tags: [spring, web]
+tags: [spring, web, java]
 ---
-# 스프링
+# 스프링이란?
 
 ### 스프링(Spring)
 
@@ -38,6 +38,8 @@ tags: [spring, web]
 스프링 프레임워크는 기능이 많은 만큼 환경설정이 복잡한 편이다. 이에 어려움을 느끼는 사용자들을 위해, 스프링 프레임워크를 사용하기 위한 설정의 많은 부분을 자동화하여 사용자가 정말 편하게 스프링을 활용할 수 있도록 돕는것이 바로 스프링 부트(Spring Boot)이다.
 
 # VSCode에서 스프링 시작하기
+
+### VisualStudioCode 설치 및 환경설정
 
 먼저 편집기인 visual studio code를 아래의 링크에서 다운로드 한다.
 
@@ -72,9 +74,7 @@ https://code.visualstudio.com/download
 
   빌드가 성공적으로 완료되면 스프링 프로젝트의 `build/libs`에 `<프로젝트 이름>-<프로젝트 버전>.jar`파일이 생성된다.
 
-  `clean`옵션을 추가하면 기존에 있던 빌드파일을 지우고 빌드를 진행한다.
-
-  > `clean`명령만 단독으로도 사용 가능하다.	
+  > `clean`옵션을 추가하면 기존에 있던 빌드파일을 지우고 빌드를 진행하며, `./gradlew clean`명령만 단독으로도 사용 가능하다. {: .prompt-tip }
 
 - 실행
 
@@ -85,9 +85,9 @@ https://code.visualstudio.com/download
   ex) java -jar spring_study-0.0.1-SNAPSHOT.jar
   ```
 
-  서버에 배포를 하게 될 경우에는 빌드한 파일을 서버로 이동시킨 후 실행만 해주면 된다.
+  서버에 배포를 하게 될 경우에는 빌드한 파일을 서버로 이동시킨 후 실행
 
-  > 당연히 서버에 JRE가 설치되어야 한다.
+  > 당연히 서버에 JRE가 설치되어야 한다. {: .prompt-info }
 
   
 
