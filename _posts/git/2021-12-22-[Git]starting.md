@@ -5,21 +5,19 @@ date: 2021-12-22 19:31
 categories: [Git]
 tags: [git, github]
 ---
-# Git 사용
-
-### Git 설치
+## Git 설치
 
 Git을 설치하기 위해 [git-scm.com/downloads](https://git-scm.com/downloads)로 이동하여 각 운영체제에 맞는 것을 설치한다.
 
 또는 쉘에서 각 운영체제에 맞는 명령어를 통해 설치가 가능하다.([git - book/download](https://git-scm.com/book/ko/v2/%EC%8B%9C%EC%9E%91%ED%95%98%EA%B8%B0-Git-%EC%84%A4%EC%B9%98))
 
-### 원격 Repository 생성
+## 원격 Repository 생성
 
 [Git Hub](https://github.com/)에서 회원가입 후에 Your repositories 페이지의 New버튼을 눌러 원격 저장소를 생성한다.
 
 > 옵션으로 공개, 비공개 설정을 할 수도 있고, 라이센스 파일이나 README.md파일을 자동으로 생성시킬 수 있다.
 
-### Git 기초 명령어
+## Git 기초 명령어
 
 - `git init`
 

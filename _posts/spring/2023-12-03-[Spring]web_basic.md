@@ -1,24 +1,24 @@
 ---
-title: [Spring]스프링 웹 기초
+title: 스프링 웹 기초
 author: kymin
 date: 2023-12-03 17:18
 categories: [Spring]
 tags: [spring, web, java]
 ---
 
-### welcome page
+## welcome page
 
 스프링부트가 기본적으로 제공하는 기능으로 스프링 프로젝트를 실행했을 때 가장 먼저 보이게 되는 페이지이다.
 
 기본적으로 `resource/static`의 `index.html`파일을 탐색하여 자동으로 welcome page를 띄우지만 없을 경우 `resource/templates`의 `index.html`을 welcome page로 띄운다.
 
-### 정적 컨텐츠
+## 정적 컨텐츠
 
 보통 `resource/static`에 정의되며 url을 통해 페이지를 요청 받았을 때 스프링 컨테이너에 관련 컨트롤러가 존재하지 않을 경우 스프링에 내장된 톰캣이 html파일을 불러와서 보여준다.
 
 컨트롤러가 없고 단순히 html파일만 페이지에 출력하기 때문에 페이지를 구성하는 요소들은 변경될 수 없다.
 
-### 템플릿 엔진을 이용한 mapping
+## 템플릿 엔진을 이용한 mapping
 
 템플릿엔진이 필요(thymeleaf, freeMarker 등이 있음)
 
@@ -28,7 +28,7 @@ tags: [spring, web, java]
 
 컨트롤러가 전달하는 model에 따라 페이지의 내용이 변경될 수 있다.
 
-### API
+## API
 
 `@RequestParam()`을 통해 파라미터를 요청할 수 있다.
 

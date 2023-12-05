@@ -5,21 +5,21 @@ date: 2023-11-20 17:31
 categories: [MySQL]
 tags: [database, sql]
 ---
-# MySQL
+# 
 
-### DBMS?
+## DBMS?
 
 DBMS(DataBase Management System)는 데이터를 만들고 저장 및 관리하는 기술 또는 해당 기능을 제공하는 응용 프르그램을 의미한다.
 
 MySQL, MariaDB, PostgreSQL등 여러가지 종류가 있다.
 
-### MySQL?
+## MySQL?
 
 MySQL은 가장 많이 사용되는 오픈소스 DBMS로 SQL이라고 하는 구조화된 쿼리 언어를 사용하여 데이터를 정의, 조작, 제어, 쿼리할 수 있다.
 
 MySQL은 관계형 데이터베이스 관리 시스템(RDBMS)이라는 데이터베이스 카테고리에 속한다. 관계형 데이터베이스는 데이터가 하나 이상의 열과 행의 테이블(또는 '관계')에 저장되어 서로 다른 데이터 구조가 어떻게 관련되어 있는지 쉽게 파악하고 이해할 수 있도록 사전 정의된 관계로 데이터를 구성하는 데이터베이스다.
 
-### 설치
+## 설치
 
 - HomeBrew 설치
 
@@ -37,7 +37,7 @@ MySQL은 관계형 데이터베이스 관리 시스템(RDBMS)이라는 데이터
   brew install mysql
   ```
 
-### MySQL 서버 실행
+## MySQL 서버 실행
 
 - 서버 실행
 
@@ -76,7 +76,7 @@ MySQL은 관계형 데이터베이스 관리 시스템(RDBMS)이라는 데이터
   brew services list
   ```
 
-### MySQL 서버 종료
+## MySQL 서버 종료
 
 - 서버 종료
 

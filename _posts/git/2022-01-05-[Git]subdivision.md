@@ -5,9 +5,7 @@ date: 2022-01-05 19:31
 categories: [Git]
 tags: [git]
 ---
-# branch
-
-### Branch?
+## Branch
 
 브랜치(branch)는 어떤 작업이 이루어지고 있는 하나의 줄기라고 생각하면 된다.
 
@@ -71,9 +69,7 @@ tags: [git]
   
   이 때 `git restore`은 `git checkout`과 달리 `--staged`옵션을 사용하면 `add`로 인해 stage에 올라간 파일까지 되돌릴 수 있다.
 
-# merge & rebase
-
-### Merge?
+## Merge?
 
 머지(Merge)는 서로 다른 브랜치의 내용 또는 원격 저장소와 로컬 저장소의 내용을 병합하는 것을 말한다.
 
@@ -91,7 +87,7 @@ git merge [병합할 브랜치 이름]
 
 위의 과정을 거치면 `git merge`에 주어진 브랜치는 main브랜치에 병합되고 사라진다.
 
-### Rebase?
+## Rebase
 
 리베이스(rebase)는 기능상으로만 본다면 브랜치를 병합한다는 점에서 머지와 같다고 볼 수 있지만 구조적으로 본다면 차이점이 존재한다.
 
@@ -113,7 +109,7 @@ git rebase main
 
 
 
-### Merge VS Rebase
+## Merge VS Rebase
 
 rebase를 활용하면 merge만 했을 때 보다 더 깔끔한 git history를 만들 수 있다.
 
@@ -121,7 +117,7 @@ rebase를 활용하면 merge만 했을 때 보다 더 깔끔한 git history를 �
 
 
 
-### 충돌(Conflict)
+## 충돌(Conflict)
 
 
 
@@ -129,11 +125,7 @@ rebase를 활용하면 merge만 했을 때 보다 더 깔끔한 git history를 �
 
 
 
-# tag
-
-
-
-
+## tag
 
 
 

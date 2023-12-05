@@ -1,20 +1,18 @@
 ---
-title: 커밋 메시지 컨벤션
+title: 커밋 메시지 컨벤션(Commit Message Conventions)
 author: kymin
 date: 2023-11-06 14:53
 categories: [Git]
 tags: [git]
 ---
 
-# 커밋 컨벤션(Commit Conventions)
-
-### 커밋 메시지 컨벤션?
+## 커밋 메시지 컨벤션?
 
 Git에서 커밋을 할 때 작성하게 되는 커밋 메시지에 대한 규칙
 
 Git을 사용하는 가장 큰 목적 중 하나가 버전관리인 만큼 프로젝트에 대한 히스토리를 관리할 때에 커밋을 이해하기 쉽도록 가독성을 높이고 협업에 더욱 유용하도록 만들어졌다.
 
-### 구조
+## 구조
 
 ```
 <type>(<scope>): <subject>
@@ -60,7 +58,7 @@ Git을 사용하는 가장 큰 목적 중 하나가 버전관리인 만큼 프�
 >- `Ref` : 참고할 이슈가 있을 때 사용
 >- `Related to` : 해당 커밋에 관련된 이슈번호 (아직 해결되지 않은 경우)
 
-### 예시
+## 예시
 
 ```
 docs(guide): updated fixed docs from Google Docs
