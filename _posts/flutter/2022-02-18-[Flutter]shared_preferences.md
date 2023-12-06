@@ -1,13 +1,11 @@
 ---
-title: shared_preferences
+title: 플러터 데이터 저장 shared_preferences
 author: kymin
 date: 2022-02-18 20:11
 categories: [Mobile, Flutter]
 tags: [flutter, dart]
 ---
-# Shared Preference
-
-### shared preferences란?
+## shared preferences란?
 
 shared preferences는 플러터 어플리케이션이 key - value형태의 데이터를 디스크에 저장하기 위한 플러그인으로, IOS의 NSUserrDefaults와 안드로이드의 SharedPreferences의 기능을 플러터에서 사용할 수 있도록 만들어졌다.
 
@@ -17,7 +15,7 @@ shared preferences는 플러터 어플리케이션이 key - value형태의 데�
 >
 > 지원되는 데이터의 자료형이 한정되어 있고 대용량의 데이터를 저장하기에 적합하지 않기 때문에 간단하고 중요도가 높지 않은 데이터를 기억하는 용도로 사용할 것을 권장하고 있다.
 
-### shared preferences 사용
+## shared preferences 사용
 
 shared preference가 제공하는 기능은 데이터 저장하기, 데이터 읽기, 데이터 삭제하기로 나눌 수 있다.
 
@@ -30,7 +28,7 @@ dependencies:
   shared_preferences: <last version>
 ```
 
-- **데이터 저장하기**
+- ### **데이터 저장하기**
 
   key - value형태의 데이터를 저장하는 방법은 아래와 같다.
 
@@ -51,7 +49,7 @@ dependencies:
 
 
 
-- **데이터 읽기**
+- ### **데이터 읽기**
 
   key - value형태의 데이터를 읽어오는 방법은 아래와 같다.
 
@@ -73,7 +71,7 @@ dependencies:
 
 
 
-- **데이터 삭제하기**
+- ### **데이터 삭제하기**
 
   key - value형태의 데이터를 삭제하는 방법은 아래와 같다.
 

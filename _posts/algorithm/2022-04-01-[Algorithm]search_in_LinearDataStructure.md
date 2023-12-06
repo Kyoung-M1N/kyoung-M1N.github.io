@@ -5,13 +5,11 @@ date: 2022-04-01 20:11
 categories: [Algorithm]
 tags: [algorithm, python]
 ---
-# 선형 자료구조에서의 탐색
-
-### 순차 탐색
+## 순차 탐색
 
 
 
-### 이분 탐색
+## 이분 탐색
 
 
 

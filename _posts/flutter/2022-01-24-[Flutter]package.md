@@ -1,13 +1,11 @@
 ---
-title: 패키지 만들기
+title: 플러터 패키지 만들기
 author: kymin
 date: 2022-01-24 21:11
 categories: [Mobile, Flutter]
 tags: [flutter, dart]
 ---
-# 플러터 패키지
-
-### 패키지 유형
+## 패키지 유형
 
 플러터의 패키지는 다트 패키지와 플러그인 패키지로 나누어진다.
 
@@ -21,7 +19,7 @@ tags: [flutter, dart]
 
 
 
-### 패키지 프로젝트 생성
+## 패키지 프로젝트 생성
 
 패키지를 생성하기위해 아래의 명령어로 프로젝트를 생성한다.
 
@@ -49,7 +47,7 @@ flutter create --org kr.co.shiban --template=plugin --platforms=android,ios,web 
 
 
 
-### 패키지 소스코드 작성
+## 패키지 소스코드 작성
 
 위의 예시 명령어를 입력한 결과로 아래와 같은 파일들이 생성되었다.
 
@@ -73,7 +71,7 @@ flutter create --org kr.co.shiban --template=plugin --platforms=android,ios,web 
 
 
 
-### Pub.dev에 패키지 배포
+## Pub.dev에 패키지 배포
 
 >pub.dev에서 패키지들을 검색하다보면 PUB POINTS라는 것을 볼 수 있는데 이는 해당 패키지의 전반적인 품질정도를 의미한다.
 >

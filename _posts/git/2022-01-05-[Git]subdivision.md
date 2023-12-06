@@ -107,30 +107,6 @@ git rebase main
 
 
 
-
-
-## Merge VS Rebase
-
-rebase를 활용하면 merge만 했을 때 보다 더 깔끔한 git history를 만들 수 있다.
-
-
-
-
-
-## 충돌(Conflict)
-
-
-
-
-
-
-
-## tag
-
-
-
-
-
 -----
 
 ##### 참고자료 : 
