@@ -19,87 +19,87 @@ MySQL은 관계형 데이터베이스 관리 시스템(RDBMS)이라는 데이터
 
 ## 설치
 
-- ### HomeBrew 설치
+### HomeBrew 설치
 
-  https://brew.sh/에서 HomeBrew를 설치하고 아래의 명령어를 통해 버전 정보를 출력하여 설치 여부를 확인
+https://brew.sh/에서 HomeBrew를 설치하고 아래의 명령어를 통해 버전 정보를 출력하여 설치 여부를 확인
 
-  ```shell
-  brew -v
-  ```
+```shell
+brew -v
+```
 
-- ### MySQL 설치
+### MySQL 설치
 
-  아래의 명령어를 실행하여 MySQL을 설치
+아래의 명령어를 실행하여 MySQL을 설치
 
-  ```shell
-  brew install mysql
-  ```
+```shell
+brew install mysql
+```
 
 ## MySQL 서버 실행
 
-- ### 서버 실행
+### 서버 실행
 
-  터미널에서 아래의 명령어를 실행
+터미널에서 아래의 명령어를 실행
 
-  ```shell
-  mysql.server start
-  ```
+```shell
+mysql.server start
+```
 
-  실행 명령이 성공적으로 작동한다면 아래와 같은 메시지가 출력
+실행 명령이 성공적으로 작동한다면 아래와 같은 메시지가 출력
 
-  ```shell
-  Starting MySQL
-  .SUCCESS!
-  ```
+```shell
+Starting MySQL
+.SUCCESS!
+```
 
-- ### 데몬으로 실행
+### 데몬으로 실행
 
-  데몬(daemon)은 운영체제 상에서 프로그램을 사용자가 직접적으로 제어하지 않고, 백그라운드에서 돌면서 여러 작업을 하는 프로그램을 말한다. 즉, 시스템의 기능을 제공하거나 백그라운드에서 항시 실행되는 프로그램이다.
+데몬(daemon)은 운영체제 상에서 프로그램을 사용자가 직접적으로 제어하지 않고, 백그라운드에서 돌면서 여러 작업을 하는 프로그램을 말한다. 즉, 시스템의 기능을 제공하거나 백그라운드에서 항시 실행되는 프로그램이다.
 
-  아래와 같은 명령어로 HomeBrew가 제공하는 기능을 이용하여 MySQL을 데몬 형태로 실행
+아래와 같은 명령어로 HomeBrew가 제공하는 기능을 이용하여 MySQL을 데몬 형태로 실행
 
-  ```shell
-  brew service start mysql
-  ```
+```shell
+brew service start mysql
+```
 
-  아래의 명령어로 서비스를 재시작
+아래의 명령어로 서비스를 재시작
 
-  ```shell
-  brew service restart mysql
-  ```
+```shell
+brew service restart mysql
+```
 
-  또한 아래의 명령어로 데몬으로 실행되고 있는 프로그램들의 목록을 출력
+또한 아래의 명령어로 데몬으로 실행되고 있는 프로그램들의 목록을 출력
 
-  ```shell
-  brew services list
-  ```
+```shell
+brew services list
+```
 
 ## MySQL 서버 종료
 
-- ### 서버 종료
+### 서버 종료
 
-  서버 실행과 마찬가지로 아래의 명령어를 통해 서버를 종료
+서버 실행과 마찬가지로 아래의 명령어를 통해 서버를 종료
 
-  ```shell
-  mysql.server stop
-  ```
+```shell
+mysql.server stop
+```
 
-  종료 명령이 성공적으로 작동한다면 아래와 같은 메시지가 출력
+종료 명령이 성공적으로 작동한다면 아래와 같은 메시지가 출력
 
-  ```shell
-  Shutting down MySQL
-  .SUCCESS!
-  ```
+```shell
+Shutting down MySQL
+.SUCCESS!
+```
 
-- ### 데몬으로 실행 중인 서비스 종료
+### 데몬으로 실행 중인 서비스 종료
 
-  HomeBrew가 제공하는 기능을 이용하여 MySQL을 데몬 형태로 실행한 상태라면 아래의 명령어를 통해 데몬 형태로 실행되고 있는 MySQL을 종료
+HomeBrew가 제공하는 기능을 이용하여 MySQL을 데몬 형태로 실행한 상태라면 아래의 명령어를 통해 데몬 형태로 실행되고 있는 MySQL을 종료
 
-  ```shell
-  brew services stop mysql
-  ```
+```shell
+brew services stop mysql
+```
 
-  
+
 
 -----
 
