@@ -2,7 +2,7 @@
 title: 테이블(Table)
 author: kymin
 date: 2023-11-25 16:20
-categories: [MySQL]
+categories: [Database, MySQL]
 tags: [database, sql]
 ---
 

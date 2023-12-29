@@ -2,7 +2,7 @@
 title: 설치 및 시작
 author: kymin
 date: 2023-11-20 17:31
-categories: [MySQL]
+categories: [Database, MySQL]
 tags: [database, sql]
 ---
 ## DBMS?
