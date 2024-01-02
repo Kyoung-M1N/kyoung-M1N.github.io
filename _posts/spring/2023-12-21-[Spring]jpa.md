@@ -1,7 +1,7 @@
 ---
 title: 데이터베이스 연동과 JPA
 author: kymin
-date: 2023-12-16 19:51
+date: 2023-12-21 19:51
 categories: [Spring]
 tags: [spring, web, java, jpa, database, sql]
 
