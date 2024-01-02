@@ -62,11 +62,25 @@ tags: [architecture]
 
   데이터베이스의 데이터에 접근하기 위한 객체를 의미하며, 직접 데이터베이스에 접근하여 데이터를 삽입, 삽제, 조회하는 등의 기능을 수행한다.
 
+  데이터베이스에 접근하기 위한 로직과 비즈니스 로직을 분리하기 위해 사용한다.
+
 - VO(Value Object)
 
   특정 값을 표현하기 위해 read-only속성을 가진 객체를 의미하며, 표현하려는 값에 대한 변수와 `getter`메서드만을 가지고 있다.
 
+> **Repository와 DAO의 차이**
+>
+> Repository는 entity를 db의 테이블에 매핑하여 entity를 통해 데이터베이스에 대한 작업을 수행
+>
+> DAO는 SQL문을 매핑하여 직접 데이터베이스에 대한 작업을 수행
+>
+> 따라서 Repository에서는 DAO를 여러개 선언하여 Service에 필요한 데이터 종합한 뒤에 DTO를 통해 전달하기도 한다.
 
+> **Entity와 Domain의 차이**
+>
+> Entity는 데이터베이스의 테이블과 매핑되어 데이터에 대한 작업을 수행하는 객체이며 별도의 로직이 존재하지 않는다.
+>
+> Domain은 비즈니스 로직의 구현을 위한 기능들을 정의하거나 구현하는 객체로 비즈니스 로직이 존재하며
 
 ## 계층형 구조
 
@@ -163,4 +177,4 @@ tags: [architecture]
 
 https://velog.io/@devmizz/Project-Package-Structure
 
-[velog.io/@jybin96](https://velog.io/@jybin96/Controller-Service-Repository-%EA%B0%80-%EB%AC%B4%EC%97%87%EC%9D%BC%EA%B9%8C)
+[velog.io/@jybin96](https://velog.io/@jybin96/Controller-Service-Repository-%EA%B0%80-%EB%AC%
