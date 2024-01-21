@@ -75,7 +75,9 @@ REST는 API의 작동 방식에 대한 조건을 부과하는 소프트웨어 �
 
 ## REST API
 
-REST의 특징을 기반으로 서비스 API를 구현한 것으로 최근 OpenAPI를 제공하는 기관들은 대부분 REST API를 제공한다.
+REST의 특징을 기반으로 서비스 API를 구현한 것으로, 웹 애플리케이션이 제공하는 각각의 데이터를 리소스, 즉 자원으로 간주하고 각각의 자원에 고유한 URI를 할당함으로써 이를 표현하는 API를 정의하기 위한 소프트웨어 아키텍처 스타일이다.
+
+최근 OpenAPI를 제공하는 기관들은 대부분 REST API를 제공한다.
 
 각 요청이 어떤 동작이나 정보를 제공하기 위한 것인지 요청의 모습만으로 파악이 가능한 것이 특징이다.
 
@@ -134,16 +136,80 @@ REST의 특징을 기반으로 서비스 API를 구현한 것으로 최근 OpenA
 
 RESTful API는 REST의 설계 규칙을 잘 지켜서 설계된 API를 말하며 이해하기 쉽고 사용하기 쉬운 REST API를 만드는 것을 목적으로 한다.
 
+### **HATEOAS (Hypermedia As The Engine Of Application State)**
 
+HATEOAS는 서버가 클라이언트 요청에 대해 응답을 할 때, 추가적인 정보를 제공하는 링크를 포함하는 것을 의미한다.
+
+HATEOAS는 서버와 클라이언트가 동적인 상호작용을 할 수 있도록 링크를 제공하며 링크를 통해 데이터와 관련된 작업에 대한 정보를 응답과 함께 제공받는다.
+
+### HATEOAS 적용
+
+아래와 같이 `build.gradle`을 수정하여 의존성 추가
+
+```
+dependencies {
+	...
+	implementation 'org.springframework.boot:spring-boot-starter-hateoas'
+	...
+}
+```
+
+클라이언트의 요청에 대한 응답에 링크를 추가하여 반환
+
+```java
+@RestController
+@RequestMapping("/api")
+public class MemberContorller {
+    private MemberService memberService;
+
+    public MemberContorller(MemberService memberService) {
+        this.memberService = memberService;
+    }
+
+    @PostMapping(value = "/my-info")
+    @ResponseBody
+    public EntityModel<MemberEntity> showInfo(@RequestBody MemberDto dto) {
+        EntityModel<MemberEntity> response = EntityModel.of(memberService.signUp(dto),
+                linkTo(methodOn(this.getClass()).signUp(dto)).withSelfRel(),	// 현재 자원의 URL을 링크로 추가
+                linkTo(methodOn(this.getClass()).logout()).withRel("logout"));	// 로그아웃을 위한 URL을 링크로 추가
+        return response;
+    }
+  	...
+}
+```
+
+```
+// 기존 응답
+{
+	"userId" : "kymin@email.com",
+	"username" : "kymin"
+}
+```
+
+```
+// HATEOAS 적용
+{
+	"userId" : "kymin@email.com",
+	"username" : "kymin"
+	"_links" : {
+		"self" : {
+			"href" : "http://localhost:8080/api/my-info"	// 현재 자원의 URL
+		},
+		"logout" : {
+			"href" : "http://localhost:8080/api/logout"	// 로그아웃을 위한 URL
+		}
+	}
+}
+```
 
 -----
 
 ##### 참고자료 :
 
-https://aws.amazon.com/ko/what-is/restful-api/
-
-https://meetup.nhncloud.com/posts/92
-
 [https://velog.io/@somday](https://velog.io/@somday/RESTful-API-이란)
 
 https://dev-coco.tistory.com/97
+
+[https://www.boostcourse.org/](https://www.boostcourse.org/web326/lecture/58986?isDesc=false)
+
+https://joomn11.tistory.com/26
