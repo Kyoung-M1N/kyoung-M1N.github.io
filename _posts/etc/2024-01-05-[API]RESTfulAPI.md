@@ -208,8 +208,8 @@ public class MemberContorller {
 
 [https://velog.io/@somday](https://velog.io/@somday/RESTful-API-이란)
 
-https://dev-coco.tistory.com/97
+[https://dev-coco.tistory.com/97](https://dev-coco.tistory.com/97)
 
 [https://www.boostcourse.org/](https://www.boostcourse.org/web326/lecture/58986?isDesc=false)
 
-https://joomn11.tistory.com/26
+[https://joomn11.tistory.com/26](https://joomn11.tistory.com/26)
