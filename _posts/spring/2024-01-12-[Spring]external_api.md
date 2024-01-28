@@ -1,5 +1,5 @@
 ---
-title: 외부 API
+title: 스프링 외부 API
 author: kymin
 date: 2024-01-12 14:51
 categories: [Spring]
