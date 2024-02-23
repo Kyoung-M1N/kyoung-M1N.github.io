@@ -2,7 +2,7 @@
 title: 데이터 크롤링과 DB생성
 author: kymin
 date: 2024-02-11 21:11
-categories: [Etc, Database]
+categories: [Database]
 tags: [crawling, database, python]
 
 ---
