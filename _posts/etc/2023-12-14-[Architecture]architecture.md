@@ -175,6 +175,6 @@ tags: [architecture]
 
 [velog.io/@jsb100800](https://velog.io/@jsb100800/Spring-boot-directory-package)
 
-https://velog.io/@devmizz/Project-Package-Structure
+[https://velog.io/@devmizz](https://velog.io/@devmizz/Project-Package-Structure)
 
 [velog.io/@jybin96](https://velog.io/@jybin96/Controller-Service-Repository-%EA%B0%80-%EB%AC%B4%EC%97%87%EC%9D%BC%EA%B9%8C)
