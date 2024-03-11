@@ -93,7 +93,7 @@ EC2 인스턴스에 실행파일을 만들기 위한 방법으로는 프로젝�
 
 인스턴스의 퍼블릭 DNS를 참조하여 `ssh -i "sshKey.pem" [퍼블릭 IPv4 DNS]`) 명령어로 EC2 인스턴스에 접속한다.
 
-`sudo apt-get update`명령어를 통해 apt를 업데이트 한 뒤 git(`sudo apt-get install git`)과 자바(`sudo get-apt install openjdk-17-jdk`)를 설치한다.
+`sudo apt-get update`명령어를 통해 apt를 업데이트 한 뒤 git(`sudo apt-get install git`)과 자바(`sudo apt-get install openjdk-17-jdk`)를 설치한다.
 
 ### 배포할 파일 이동 후 빌드
 
