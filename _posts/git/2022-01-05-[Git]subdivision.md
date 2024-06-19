@@ -1,5 +1,5 @@
 ---
-title: 작업 분기
+title: Branch와 Merge
 author: kymin
 date: 2022-01-05 19:31
 categories: [Git]

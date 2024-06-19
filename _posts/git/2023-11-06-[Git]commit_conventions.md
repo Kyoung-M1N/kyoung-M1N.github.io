@@ -1,5 +1,5 @@
 ---
-title: 커밋 메시지 컨벤션(Commit Message Conventions)
+title: 커밋 메시지 컨벤션
 author: kymin
 date: 2023-11-06 14:53
 categories: [Git]
