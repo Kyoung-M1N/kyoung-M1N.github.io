@@ -53,6 +53,19 @@ CREATE TABLE [테이블이름](
 
 제약조건은 필수가 아니며 필드 이름과 필드 타입을 한 쌍으로 하고 각 필드들을 쉼표(,)로 구분하여 테이블을 생성한다.
 
+### 예시
+
+```sql
+CREATE TABLE post(
+	id int NOT NULL AUTO_INCREMENT,
+	created_date_time datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	name varchar(20) NOT NULL,
+	PRIMARY KEY(id)
+);
+```
+
+
+
 ### 테이블 구조 출력
 
 아래의 명령어로 테이블의 구조를 출력
