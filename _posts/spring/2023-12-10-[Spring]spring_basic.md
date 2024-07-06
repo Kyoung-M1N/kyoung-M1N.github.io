@@ -59,7 +59,7 @@ tags: [spring, web, java]
 
   컴포넌트 스캔 방식은 정형화된 계층에 해당하는 `Controller`, `Service`, `Repository`등의 객체를 스프링빈으로 등록하는 데에 주로 사용되고, 이외에도 특별한 경우가 아니라면  대부분의 경우에 사용된다.
 
-### 의존성 주입(Dependency Inejction)
+### 의존성 주입(Dependency Inejction, DI)
 
 의존성 주입은 외부에서 클라이언트에게 서비스를 제공(주입)하는 것을 의미한다. 즉, 객체가 필요로 하는 어떤 것을 외부에서 전달해주는 것을 말한다.
 
@@ -132,7 +132,11 @@ tags: [spring, web, java]
   }
   ```
 
-  가장 많이 사용되는 의존성 주입 방식이며
+  가장 많이 사용되는 의존성 주입 방식이며, 의존 객체를 사용하는 객체의 인스턴스가 생성될 때에 의존성 주입이 발생한다.
+
+  객체의 생성자 호출 시 의존성 주입이 한 번 발생하기 때문에 `final`로 선언 가능하며, 이에 따라 객체의 불변성이 보장된다.
+
+  객체에 생성자가 1개만 존재하는 경우에 `@Autowired`를 생략할 수 있으며, 의존 관계가 누락되거나 순환참조로 인한 오버플로우가 발생한다면 런타임에 러가 아닌 컴파일 에러가 발생하므로 실행 중 발생하는 오류를 방지할 수 있다.
 
   아래와 같이 Lombok라이브러리의 `@RequiredArgsConstructor`를 이용하여 간결하게 작성할 수 있다.
 
@@ -145,31 +149,17 @@ tags: [spring, web, java]
   }
   ```
 
-  
+### 제어의 역전(Inversion Of Control, IOC)
 
+제어의 역전은 객체의 생성 및 제어권을 프로그램이 아닌 프레임워크에게 맡기는 것이다. 즉, 객체의 생성, 소멸 등의 생명주기를 프로그래머가 관리하는 것이 아니라 스프링 컨테이너가 관리하는 것을 의미한다.
 
-
-
-
-### 제어의 역전(Inversion Of Control)
-
-제어의 역전이란 객체의 생성 및 제어권을 사용자가 아닌 스프링에게 맡기는 것이다.
-
-기존에는 사용자가 new연산을 통해 객체를 생성하고 메소드를 호출했다면, 스프링빈을 등록하여 객체의 관리를 스프링 컨테이너가 담당하게 된다.
-
-이 때 다른 객체에서 스프링빈으로 등록된 객체를 호출하게 되면 스프링 컨테이너는 해당 객체 대한 인스턴스를 자동으로 넘겨준다.
-
-따라서 사용자는 직접 new를 이용해 생성한 객체를 사용하지 않고, 스프링에 의하여 관리되는 자바 객체를 사용하게 된다.
-
-
+스프링 프레임워크는 경량 컨테이너로서 스프링빈으로 등록된 객체의 생명주기를 관리하며, 개발자는 이를 통해 의존성 주입 등을 활용하여 객체의 생명 주기 관리 등의 복잡한 요소들을 신경 쓰지 않고, 비즈니스 로직에 집중할 수 있게 된다.
 
 -----
 
 ##### 참고자료 :
 
 [https://spring.io/guides](https://spring.io/guides)
-
-[inflearn - 스프링 입문](https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81-%EC%9E%85%EB%AC%B8-%EC%8A%A4%ED%94%84%EB%A7%81%EB%B6%80%ED%8A%B8/dashboard)
 
 [https://velog.io/@lundy](https://velog.io/@lundy/Spring-Boot-%EC%8A%A4%ED%94%84%EB%A7%81-%EB%B9%88-%EB%93%B1%EB%A1%9D-%EB%B0%A9%EB%B2%95-%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8-%EC%8A%A4%EC%BA%94-%EC%A7%81%EC%A0%91-%EB%93%B1%EB%A1%9D)
 
@@ -179,3 +169,4 @@ tags: [spring, web, java]
 
 [https://devlog-wjdrbs96.tistory.com](https://devlog-wjdrbs96.tistory.com/166)
 
+[https://innovation123.tistory.com](https://innovation123.tistory.com/167)
