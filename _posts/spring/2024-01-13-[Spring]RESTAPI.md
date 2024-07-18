@@ -129,6 +129,21 @@ public class TestController {
 
 기존에 존재하는 리소스를 수정할 때 사용하며 요청을 통해 전달받은 데이터를 기존의 데이터에 덮어쓰는 개념이다.
 
+```java
+@RestController
+@RequiredArgsConstructor
+public class TestController {
+    private final TestService testService;
+  	
+    @PutMapping("/info/{id}")
+    public ResponseEntity<Test> testJson(@PathVariable int id, @RequestBody RequestDto info) {
+      	 return ResponseEntity.ok(testService.changeInfo(info));
+    }
+}
+```
+
+GET과 POST가 합쳐진 형태
+
 ### PATCH
 
 기존에 존재하는 리소스를 부분적으로 수정할 때 사용하며 
