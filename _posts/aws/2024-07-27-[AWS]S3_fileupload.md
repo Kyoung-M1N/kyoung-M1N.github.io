@@ -138,7 +138,7 @@ AWS S3는 아마존이 제동하는 객체 스토리지 서비스로 데이터�
 
 ---
 
-참고자료 :
+##### 참고자료 :
 
 [https://velog.io/@yes_jihyeon](https://velog.io/@yes_jihyeon/AWS-%EC%9D%B4%EB%AF%B8%EC%A7%80-%EC%A0%80%EC%9E%A5%EC%9D%84-%EC%9C%84%ED%95%9C-S3-%EB%B2%84%ED%82%B7-%EC%83%9D%EC%84%B1%ED%95%98%EA%B8%B0-SpringBootGradle)
 
