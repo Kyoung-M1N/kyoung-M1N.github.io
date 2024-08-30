@@ -27,9 +27,17 @@ title: About
 
 ### Projects
 
-- Goodbap
+- 돈두댓(Don`t do that)
 
-  `Spring` `MySQL` `Github Actions` `AWS`
+  `Spring` `MySQL` `Github Actions` `AWS` `JWT`
+
+  - 기간 : 24.06.21 ~ 24.08.06
+  - 내용 : 안 좋은 습관을 개선하기 위한 NOT TODO 리스트
+  - 링크 : [https://github.com/LikeLion-KW-TEAM2](https://github.com/LikeLion-KW-TEAM2)
+
+- 굿밥(Goodbap)
+
+  `Spring` `MySQL` `AWS`
 
   - 기간 : 24.01.21 ~ 
   - 내용 : 찐 맛집을 찾기 위한 지도 서비스
