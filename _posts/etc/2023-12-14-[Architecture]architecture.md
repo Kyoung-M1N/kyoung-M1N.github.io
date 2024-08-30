@@ -135,10 +135,10 @@ tags: [architecture]
     │   │       │       ├── repository
     │   │       │       └── service
     │   │       └── global
-    │   │						├── auth
-    │   │						├── common
-    │   │						├── config
-    │   │						└── util
+    │   │           ├── auth
+    │   │           ├── common
+    │   │           ├── config
+    │   │           └── util
     │   └── resources
     │       └── application.properties
 ```
@@ -169,7 +169,7 @@ tags: [architecture]
 
 ##### 참고자료 :
 
-[우아한 기술블로그](https://techblog.woowahan.com/2647/)
+[https://techblog.woowahan.com](https://techblog.woowahan.com/2647/)
 
 [cheese10yun.github.io](https://cheese10yun.github.io/spring-guide-directory/)
 
