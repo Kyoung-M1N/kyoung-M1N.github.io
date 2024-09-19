@@ -35,15 +35,18 @@ title: About
   - 내용 : 안 좋은 습관을 개선하기 위한 NOT TODO 리스트
   - 링크 : [https://github.com/LikeLion-KW-TEAM2](https://github.com/LikeLion-KW-TEAM2)
 
+
+
 - 굿밥(Goodbap)
 
   `Spring` `MySQL` `AWS`
 
-  - 기간 : 24.01.21 ~ 
-  - 내용 : 찐 맛집을 찾기 위한 지도 서비스
+  - 기간 : 24.01.21 ~ 24.03.01
+  - 내용 : 찐 로컬 맛집을 찾기 위한 지도 서비스
   - 링크 : [https://github.com/Goodbap](https://github.com/Goodbap)
 
-   
+
+
 
 - Team-Kelly(시작이 반이다 앱)
 
