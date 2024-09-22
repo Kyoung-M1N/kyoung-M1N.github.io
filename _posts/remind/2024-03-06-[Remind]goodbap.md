@@ -64,4 +64,6 @@ AWS를 사용하는 김에 배포 자동화도 구현해보고 싶어서 깃허�
 
 ##### 프로젝트 링크 : 
 
+[notion-goodbap](https://adaptive-foxtrot-ecd.notion.site/Goodbap-fb3dd81a25184377a673c597a818e718)
+
 [https://github.com/Goodbap](https://github.com/Goodbap)
