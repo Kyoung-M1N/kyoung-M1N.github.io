@@ -1,5 +1,5 @@
 ---
-title: JPA-엔티티 매니저와 트랜잭션
+title: JPA 엔티티 매니저와 트랜잭션
 author: kymin
 date: 2024-09-04 19:31
 categories: [JPA]
