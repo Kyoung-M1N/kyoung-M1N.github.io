@@ -47,16 +47,5 @@ title: About
 
 
 
-
-- Team-Kelly(시작이 반이다 앱)
-
-  `Flutter` `Jira` `Confluence` 
-
-  - 기간 : 21.02.20 ~ 22.03.22
-  - 내용 : 날씨, 교통 정보를 기상 알람을 통해 알려주는 출근 도우미
-  - 링크 : [https://github.com/Team-Kelly](https://github.com/Team-Kelly)
-
-   
-
 ###  **Github Contributions**
 ![github-contributions](https://ghchart.rshah.org/Kyoung-M1N)
