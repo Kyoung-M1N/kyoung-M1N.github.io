@@ -1,5 +1,5 @@
 ---
-title: 구간 합 알고리즘
+title: 누적 합과 구간 합
 author: kymin
 date: 2024-11-13 14:29
 categories: [Algorithm]
