@@ -24,6 +24,7 @@ tags: [algorithm, java]
 
 합 배열의 값을 이용하여 아래의 식으로 특정 구간의 값을 구할 수 있다.
 
+{% raw %}
 ```java
 int[] numbers = {1,2,3,4,5,6,7};
 int[] sumArray = {1,3,6,10,15,21,28};
@@ -31,11 +32,13 @@ int[] sumArray = {1,3,6,10,15,21,28};
 // 인덱스 i부터 j까지의 구간 합
 int prefixSum = sumArray[j] - sumArray[i - 1];
 ```
+{% endraw %}
 
 이 때 `arrayIndexOutOfBound`가 발생하지 않도록 0번 인덱스의 값을 0으로 두고 주어진 배열보다 인덱스를 하나씩 증가시켜줘야 한다.
 
 2차원 배열에서도 마찬가지로 합 배열을 이용하여 구간 합을 구할 수 있다.
 
+{% raw %}
 ```java
 int[][] numbers= {{1,2,3,4},{2,3,4,5},{3,4,5,6},{4,5,6,7}}
 
@@ -45,6 +48,7 @@ int[][] sumArray = {{1,3,6,10},{3,8,15,24},{6,15,27,42},{10,24,42,64}}
 // (x1,y1)부터 (x2,y2)까지의 구간 합
 int result = sumArray[x2][y2] - sumArray[x2][y1 - 1] - sumArray[x1 - 1][y2] + sumArray[x1 - 1][y1 - 1];
 ```
+{% endraw %}
 
 마찬가지로 `arrayIndexOutOfBound`가 발생하지 않도록 행과 열의 0번 인덱스의 값을 0으로 두고 주어진 배열보다 인덱스를 하나씩 증가시켜줘야 한다.
 
