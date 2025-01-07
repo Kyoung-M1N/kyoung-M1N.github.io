@@ -88,24 +88,27 @@ public interface Slice<T> extends Streamable<T> {
 
 	boolean hasPrevious(); // 이전 Slice의 존재 유무 반환
 
+  // 현재 Slice에 대한 Pageable을 생성해서 반환
 	default Pageable getPageable() {
 		return PageRequest.of(getNumber(), getSize(), getSort());
-	} // 현재 Slice에 대한 Pageable을 생성해서 반환
+	}
 
 	Pageable nextPageable(); // 다음 Slice의 Pageable 반환
 
 	Pageable previousPageable(); // 이전 Slice의 Pageable 반환
-
-	<U> Slice<U> map(Function<? super T, ? extends U> converter);
+  
 	// Slice 내의 엔티티를 다른 객체로 매핑
+	<U> Slice<U> map(Function<? super T, ? extends U> converter);
 
+  // 다음 Slice가 있다면 다음 Slice의 Pageable, 현재 Slice가 마지막이면 현재 Pageable 반환
 	default Pageable nextOrLastPageable() {
 		return hasNext() ? nextPageable() : getPageable();
-	} // 다음 Slice가 있다면 다음 Slice의 Pageable, 현재 Slice가 마지막이면 현재 Pageable 반환
-
+	}
+  
+  // 이전 Slice가 있다면 이전 Slice의 Pageable, 현재 Slice가 첫번째면 현재 Pageable 반환
 	default Pageable previousOrFirstPageable() {
 		return hasPrevious() ? previousPageable() : getPageable();
-	} // 이전 Slice가 있다면 이전 Slice의 Pageable, 현재 Slice가 첫번째면 현재 Pageable 반환
+	}
 }
 ```
 
@@ -128,21 +131,23 @@ public interface DataRepository extends JpaRepository<Data, Long> {
 
 ```java
 public interface Page<T> extends Slice<T> {
-
+  // 빈 페이지 반환
 	static <T> Page<T> empty() {
 		return empty(Pageable.unpaged());
-	} // 빈 페이지 반환
-
+	}
+  
+  // Pageable을 받아 빈 페이지 반환
 	static <T> Page<T> empty(Pageable pageable) {
 		return new PageImpl<>(Collections.emptyList(), pageable, 0);
-	} // Pageable을 받아 빈 페이지 반환
+	}
 
 	int getTotalPages(); // 조회 결과 만들어지는 전체 페이지 개수 반환
 
 	long getTotalElements(); // 조회 결과에 해당하는 전체 엔티티 개수 반환
-
-	<U> Page<U> map(Function<? super T, ? extends U> converter);
+  
   // Page 내의 엔티티를 다른 객체로 매핑
+	<U> Page<U> map(Function<? super T, ? extends U> converter);
+
 }
 ```
 
