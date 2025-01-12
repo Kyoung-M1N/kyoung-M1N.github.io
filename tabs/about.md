@@ -6,28 +6,15 @@ title: About
 
 ### Education
 
-- 광운대학교
-
-  `전자통신공학과`
-
-  - 기간 : 20.03 ~
+- [Kwangwoon University](https://www.kw.ac.kr/ko/) | 전자통신공학과 | 20.03 - current
 
 
 
 
 ### Experience
 
-- 광운대학교 멋쟁이 사자처럼 대학 13기 부대표
-
-  `백엔드` `Spring` 
-
-  - 기간 : 25.02 ~ 
-
-- 광운대학교 멋쟁이 사자처럼 대학 12기
-
-  `백엔드` `Spring` 
-
-  - 기간 : 24.03 ~ 24.12
+- [LikeLion at Kwangwoon Univ](https://likelion.university/) | 광운대학교 멋쟁이 사자처럼 13기 부대표 | 25.02 - current
+- [LikeLion at Kwangwoon Univ](https://likelion.university/) | 광운대학교 멋쟁이 사자처럼 12기 BackEnd | 24.03 - 24.12
 
 
 
