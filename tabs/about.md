@@ -6,15 +6,15 @@ title: About
 
 ### Education
 
-- [Kwangwoon University](https://www.kw.ac.kr/ko/) | 전자통신공학과 | 20.03 - current
+- [Kwangwoon University](https://www.kw.ac.kr/ko/) \| 전자통신공학과 \| 20.03 - current
 
 
 
 
 ### Experience
 
-- [LikeLion at Kwangwoon Univ](https://likelion.university/) | 광운대학교 멋쟁이 사자처럼 13기 부대표 | 25.02 - current
-- [LikeLion at Kwangwoon Univ](https://likelion.university/) | 광운대학교 멋쟁이 사자처럼 12기 BackEnd | 24.03 - 24.12
+- [LikeLion at Kwangwoon Univ](https://likelion.university/) \| 광운대학교 멋쟁이 사자처럼 13기 부대표 \| 25.02 - current
+- [LikeLion at Kwangwoon Univ](https://likelion.university/) \| 광운대학교 멋쟁이 사자처럼 12기 BackEnd \| 24.03 - 24.12
 
 
 
