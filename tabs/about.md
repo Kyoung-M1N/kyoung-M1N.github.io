@@ -34,7 +34,7 @@ title: About
 
 
 
-### Projects
+### [Projects](https://adaptive-foxtrot-ecd.notion.site/Projects-1067f82dda12806f9b4ce562125397f3)
 
 - 에코비전(EcoVision)
 
