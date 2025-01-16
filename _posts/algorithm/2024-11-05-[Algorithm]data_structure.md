@@ -5,9 +5,9 @@ date: 2024-11-05 15:23
 categories: [Algorithm]
 tags: [algorithm, java]
 ---
-## 배열(Array)과 리스트(List)
+## **배열(Array)과 리스트(List)**
 
-### 배열
+### **배열**
 
 메모리의 연속된 공간에 값이 채워져있는 형태의 자료구조를 의미하며 각 원소들은 인덱스를 이용하여 참조할 수 있다.
 
@@ -28,7 +28,7 @@ public class array {
 
 
 
-### 리스트
+### **리스트**
 
 값과 포인터(메모리 상의 주소)를 하나로 묶은 노드를 포인터를 이용하여 연결한 형태의 자료구조를 의미하며 배열과 달리 메모리 상에 연속적으로 값을 저장하지 않는다.
 
@@ -57,9 +57,9 @@ List<Object> list = new ArrayList<>();
 
 
 
-## 스택(Stack)과 큐(Queue)
+## **스택(Stack)과 큐(Queue)**
 
-### 스택
+### **스택**
 
 배열이 발전된 형태의 자료구조로 삽입과 삭제 연산이 후입선출(LIFO : Last In First Out)로 발생하는 배열이다.
 
@@ -97,7 +97,7 @@ public class Stack {
 
 
 
-### 큐
+### **큐**
 
 배열이 발전된 형태의 자료구조로 삽입과 삭제 연산이 선입선출(FIFO : First In First Out)로 발생하는 배열이다.
 
@@ -135,9 +135,9 @@ public class Queue {
 
 
 
-## 그래프(Graph)와 트리(Tree)
+## **그래프(Graph)와 트리(Tree)**
 
-### 그래프
+### **그래프**
 
 데이터를 표현하는 단위인 `node`와 `node`를 연결하는 edge를 이용하여 여러 개의 node가 edge로 연결된 형태의 자료구조를 의미하며 데이터나 객체의 연결성에 중점을 둔 자료구조이다.
 
@@ -145,7 +145,7 @@ public class Queue {
 
 그래프를 구현하는 방법은 에지 리스트, 인접 행렬, 인접 리스트 세 가지가 있다.
 
-- ### 에지 리스트(edge list)
+- ### **에지 리스트(edge list)**
 
   그래프 자료구조를 edge를 중심으로 표현하는 방식으로 배열의 원소에 startNode와 endNode를 저장하여 edge를 표현하고 edge에는 가중치(cost)가 있을 수도 있다.
 
@@ -166,7 +166,7 @@ public class Queue {
 
   Bellman-ford 알고리즘이나 kruskal 알고리즘과 같이 edge의 가중치가 중심이 되는 알고리즘에서 사용된다.
 
-- ### 인접 행렬(adjacency matrix)
+- ### **인접 행렬(adjacency matrix)**
 
   2차원 행렬의 인덱스를 노드와 대응시키고 행렬의 원소에 가중치를 저장하는 방식으로 가중치가 존재하지 않을 경우에는 행렬의 원소를 1로 설정하여 연결 여부를 표현한다.
 
@@ -183,7 +183,7 @@ public class Queue {
 
   특정 startNode나 endNode에 해당하는 edge정보를 알아내기 위해 n번의 탐색과정이 필요하므로, 노드의 수에 비해 edge의 수가 적을 경우 불필요한 공간을 많이 사용하게 되며, 노드 갯수가 너무 많은 경우에는 2차원 행렬 자체를 선언할 수 없다.(node의 수가 3만개를 넘어설 경우 `java.lang.OutOfMemoryError: Java heap space`가 발생)
 
-- ### 인접 리스트(adjacency list)
+- ### **인접 리스트(adjacency list)**
 
   `ArrayList`의 배열을 이용하여 그래프를 구현하는 방식으로 그래프를 이용한 알고리즘에서 가장 많이 사용되는 구현 방법이다.
 
@@ -208,7 +208,7 @@ public class Queue {
 
 
 
-### 트리
+### **트리**
 
 노드와 에지로 이루어진 그래프의 일종으로 일반적인 그래프와 달리 순환 구조를 가지지 않는 것이 특징이다.
 
