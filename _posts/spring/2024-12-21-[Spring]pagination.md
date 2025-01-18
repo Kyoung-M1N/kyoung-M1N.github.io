@@ -8,7 +8,7 @@ tags: [spring, web, java, jpa]
 
 ---
 
-## 페이지네이션(Pagination)
+## **페이지네이션(Pagination)**
 
 페이지네이션은 여러 개의 데이터를 일정한 크기로 나누어 제공하는 것을 의미한다.
 
@@ -31,7 +31,7 @@ Spring Data JPA는 위의 페이지네이션을 추상화하여 제공하기 때
 
 
 
-### Pageable과 PageRequest
+### **Pageable과 PageRequest**
 
 `Pageable`은 페이지네이션에 대한 정보를 담기 위한 인터페이스로 Spring Data JPA의 Repository의 파라미터로 전달된다.
 
@@ -57,9 +57,9 @@ Spring Data JPA의 Repository에 `Pageable`을 전달하여 데이터를 조회�
 
 
 
-## 페이지네이션 결과 반환
+## **페이지네이션 결과 반환**
 
-### Slice
+### **Slice**
 
 `Slice`는 `pageable`의 정보에 따라 Repository가 데이터 베이스를 조회한 결과를 반환하는 인터페이스 형태이다.
 
@@ -123,7 +123,7 @@ public interface DataRepository extends JpaRepository<Data, Long> {
 
 
 
-### Page
+### **Page**
 
 `Page`는 `pageable`의 정보에 따라 Repository가 데이터 베이스를 조회한 결과를 반환하는 인터페이스 형태로 `Slice`를 상속 받아 선언된 인터페이스이다.
 
@@ -162,7 +162,7 @@ public interface DataRepository extends JpaRepository<Data, Long> {
 
 
 
-### Slice vs Page
+### **Slice vs Page**
 
 `Slice`와 `Page`의 가장 큰 차이는 Repository를 이용하여 조회한 결과에 대해 전체 데이터의 수에 대한 정보의 제공 여부이다.
 
