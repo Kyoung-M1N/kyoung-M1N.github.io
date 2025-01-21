@@ -115,7 +115,6 @@ public interface Slice<T> extends Streamable<T> {
 Repository에서 `Slice`를 반환하는 함수를 선언하는 방법은 아래와 같다.
 
 ```java
-@Repository
 public interface DataRepository extends JpaRepository<Data, Long> {
   Slice<Data> findSliceByName(String name, Pageable pageable);
 }
@@ -154,7 +153,6 @@ public interface Page<T> extends Slice<T> {
 Repository에서 `Page`를 반환하는 함수를 선언하는 방법은 아래와 같다.
 
 ```java
-@Repository
 public interface DataRepository extends JpaRepository<Data, Long> {
   Page<Data> findPageByName(String name, Pagable pagable);
 }
