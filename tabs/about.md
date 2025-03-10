@@ -30,7 +30,7 @@ title: About
 
 ### Awards
 
-- 2024 광운대학교 연합 해커톤 대상
+- [2024 KWthon](https://github.com/kwthon-2024) | 2024 광운대학교 연합 해커톤 대상 | 24.11
 
 
 
