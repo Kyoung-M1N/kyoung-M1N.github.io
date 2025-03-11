@@ -24,9 +24,11 @@ EntityManager는 데이터베이스에 대한 작업요청이 발생하면 Entit
 
 EntityManagerFactory는 EntityManager를 생성해주는 객체로 EntityManagerFactory가 생성되면 커넥션 풀과 연결된다.
 
-EntityManagerFactory는 여러 쓰레드가 동시에 접근해도 안전하기 때문에 하나만 생성하여 애플리케이션 내에서 공유하며 사용한다. 하지만 EntityManager는 여러 쓰레드에서 동시에 접근할 셩우 데이터의 불일치가 발생할 수 있기 때문에 애플리케이션 내에서 공유되지 않고 DB에 대한 작업이 끝나면 바로 삭제(close)된다.
+EntityManagerFactory는 여러 쓰레드가 동시에 접근해도 안전하기 때문에 하나만 생성하여 애플리케이션 내에서 공유하며 사용한다. 하지만 EntityManager는 여러 쓰레드에서 동시에 접근할 경우 데이터의 불일치가 발생할 수 있기 때문에 애플리케이션 내에서 공유되지 않고 DB에 대한 작업이 끝나면 바로 삭제(close)된다.
 
 ## **영속성 컨텍스트와 트랜잭션**
+
+### **영속성 컨텍스트(Persistence Context)**
 
 아래의 코드를 통해 EntityManagerFactory에 의해 EntityManager가 생성될 때, 영속성 컨텍스트도 함께 생성된다.
 
@@ -38,13 +40,15 @@ EntityManagerFactory emf = Persistence.createEntityManagerFactory("persistenceUn
 EntityManager em = emf.createEntityManager();
 ```
 
-영속성 컨텍스트(Persistence Context)는 엔티티를 영구 저장하는 환경이라는 의미로 눈에 보이지 않는 논리적인 개념이다.
+영속성 컨텍스트는 엔티티를 영구 저장하는 환경이라는 의미로 눈에 보이지 않는 논리적인 개념이다.
 
 엔티티 객체를 생성하고 EntityManager를 통해 데이터베이스에 대한 작업을 수행하게 되면 바로 데이터베이스에 반영이 되는 것이 아니라 영속성 컨텍스트에 먼저 반영이 된다.
 
 영속성 컨텍스트는 1차 캐시(First-Level Cache)와 쓰기 지연 쿼리 저장소(Write-Behind Store)를 포함하고있다. 따라서 EntityManager가 데이터베이스에 대한 작업을 위해 함수를 실행하면 엔티티 객체는 1차 캐시에, 함수 호출에 의해 생성된 쿼리문은 쓰기 지연 쿼리 저장소에 먼저 저장된다.
 
-이 때, EntityManager는 트랜잭션 내에서 실행되는데, 트랜잭션(Transaction)은 데이터베이스의 상태를 변경하는 작업의 단위라는 의미이다.
+### **트랜잭션(Transaction)**
+
+이 때, EntityManager는 트랜잭션 내에서 실행되는데, 트랜잭션은 데이터베이스의 상태를 변경하는 작업의 단위라는 의미이다.
 
 트랜잭션은 데이터베이스에 대한 작업이 성공하면 커밋(commit)을 통해 데이터베이스의 변경을 진행하고, 작업이 실패하면 롤백(roll back)을 통해 1차 캐시를 초기화하고 데이터베이스를 작업이 발생하기 이전 상태로 되돌린다. 또한 트랜잭션은 작업의 격리를 통해 다른 트랜잭션에서 현재 작업이 진행중인 데이터에 접근하지 못하게 하는 역할도 수행한다.
 
