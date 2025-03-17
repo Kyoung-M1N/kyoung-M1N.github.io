@@ -143,13 +143,13 @@ Git을 설치하기 위해 [git-scm.com/downloads](https://git-scm.com/downloads
 
 ##### 참고자료 : 
 
-[git-scm.com](https://git-scm.com/book/ko/v2)
+[https://git-scm.com](https://git-scm.com/book/ko/v2)
 
-[inflearn - Git](https://www.inflearn.com/course/%EC%A7%80%EC%98%A5%EC%97%90%EC%84%9C-%EC%98%A8-git/dashboard)
+[https://www.inflearn.com/course](https://www.inflearn.com/course/%EC%A7%80%EC%98%A5%EC%97%90%EC%84%9C-%EC%98%A8-git/dashboard)
 
-[pages.github.com](https://pages.github.com/)
+[https://pages.github.com](https://pages.github.com/)
 
-[AWS CodeCommit](https://docs.aws.amazon.com/ko_kr/codecommit/latest/userguide/how-to-basic-git.html)
+[https://docs.aws.amazon.com/ko_kr/codecommit](https://docs.aws.amazon.com/ko_kr/codecommit/latest/userguide/how-to-basic-git.html)
 
-[subicura.com](https://subicura.com/git/guide/basic.html#git-init-저장소-만들기)
+[https://subicura.com](https://subicura.com/git/guide/basic.html#git-init-저장소-만들기)
 

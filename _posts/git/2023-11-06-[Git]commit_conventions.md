@@ -95,6 +95,6 @@ Related to: #48, #45           현재 커밋에서 아직 이슈 48 과 45 가 �
 
 ##### 참고자료 : 
 
-[gist.github.com/stephenparish](https://gist.github.com/stephenparish/9941e89d80e2bc58a153#format-of-the-commit-message)
+[https://gist.github.com/stephenparish](https://gist.github.com/stephenparish/9941e89d80e2bc58a153#format-of-the-commit-message)
 
-[velog.io/@msung99](https://velog.io/@msung99/Git-Commit-Message-Convension)
+[https://velog.io/@msung99](https://velog.io/@msung99/Git-Commit-Message-Convension)
