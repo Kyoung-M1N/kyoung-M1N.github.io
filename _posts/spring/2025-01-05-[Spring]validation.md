@@ -1,5 +1,5 @@
 ---
-title: validation
+title: 요청값 검증하기
 author: kymin
 date: 2025-01-05 12:54
 categories: [Spring]
