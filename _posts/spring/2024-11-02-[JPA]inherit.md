@@ -171,3 +171,5 @@ Hibernate: -
 ##### 참고자료 :
 
 [https://velog.io/@leeeeeyeon](https://velog.io/@leeeeeyeon/JPA-%EC%97%B0%EA%B4%80-%EA%B4%80%EA%B3%84-%EC%A0%95%EB%A6%AC)
+
+[https://velog.io/@imcool2551](https://velog.io/@imcool2551/JPA-%EC%83%81%EC%86%8D%EA%B4%80%EA%B3%84-%EB%A7%A4%ED%95%91)
