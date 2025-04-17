@@ -11,6 +11,8 @@ title: About
 
 
 
+
+
 ### Experience
 
 - [SOPT](https://www.sopt.org/) \| 36th 서버 YB \| 25.03 - current
@@ -32,6 +34,8 @@ title: About
 ### Awards
 
 - [2024 KWthon](https://github.com/kwthon-2024) \| 2024 광운대학교 연합 해커톤 대상 \| 24.11
+
+
 
 
 
@@ -74,6 +78,8 @@ title: About
   - 기간 : 24.01.21 ~ 24.03.01
   - 내용 : 찐 로컬 맛집을 찾기 위한 지도 서비스
   - 링크 : [https://github.com/Goodbap](https://github.com/Goodbap)
+
+
 
 
 
