@@ -125,10 +125,6 @@ Roy Fielding은 uniform interface의 구성 요소를 아래와 같이 정의한
 
     ex. cache-control, if-modified-since 헤더
 
----
-
-
-
 ## **RESTful API**
 
 결국 RESTful API는 uniform interface의 구성요소를 모두 포함하며 균일한 인터페이스를 제공하는 API이다. 따라서 우리가 RESTful API를 만들기 위해서는 uniform interface 제약조건을 중점적으로 지켜주면 된다.
@@ -136,15 +132,16 @@ Roy Fielding은 uniform interface의 구성 요소를 아래와 같이 정의한
 ### **uniform interface를 위한 4가지 조건**
 
 - identification of resource(자원에 대한 식별)
-  - 자원을 식별할 수 있는 정보를 의미 자원의 상태는 변화 가능하지만 식별자는 변하면 안됨
-  - 예를들어 /user/1이 식별자로 변하면 안되지만 상태인 이름, 전화번호는 변할 수 있음
+  - 자원을 식별할 수 있는 정보를 의미
+  - 자원의 상태는 변화 가능하지만 식별자는 불변
+  - 예를들어 /user/1은 식별자로 변하면 안되지만 상태인 이름, 전화번호는 변할 수 있음
 - manipulation of resources through representation(표현을 통한 자원의 조작)
-  - 자원의 조작에 대한 내용이 표현되어야 하며 이는 http메서드로 주로 표현된다.
+  - 자원의 조작에 대한 내용이 표현되어야 하며 이는 http메서드로 주로 표현
 - Self-descriptive message(자기 서술적 메시지)
-  - 일단 자원을 식별 가능해야하며 body가 있는 경우 어떤 데이터를 담고 있는지 명확히 표현되어야 함
-  - 파라미터에 약어를 너무 많이 쓰면 안되고 conent-type등이 명시되어야함
+  - 일단 자원을 식별 가능해야하며 body가 있는 경우 어떤 데이터를 담고 있는지 명확히 표현
+  - 파라미터에 약어를 너무 많이 쓰면 안되고 conent-type등을 명시
 - HATEOAS: hypermedia as the engine of application state(애플리케이션의 상태 관리를 위한 하이퍼미디어 컨트롤)
-  - 애플리케이션의 상태 전이는 링크를 통해 발생해야한다.
+  - 애플리케이션의 상태 전이는 링크를 통해 발생해야함
   - 서버의 관점에서 보면 게시클 상세보기에 접근한 경우 댓글달기, 게시글 수정하기, 게시글 삭제하기, 좋아요 등의 링크를 포함해서 보내주어야 한다.
   - 근데 여기서 문제점은 서버가 이걸(링크) 다 보내주는 경우가 많은가?
   - 보내주는 과정을 구현하면서 오히려 컨트롤러끼리 기능의 결합도가 증가하지 않을까?
