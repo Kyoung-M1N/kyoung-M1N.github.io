@@ -149,8 +149,6 @@ Roy Fielding은 uniform interface의 구성 요소를 아래와 같이 정의한
 
 ### **HATEOAS(Hypermedia As The Engine Of Application State)**
 
-
-
 ---
 
 자원을 이름으로 구분하여 해당 자원에 대한 정보를 주고 받으며, URI를 통해 자원을 명시하고 HTTP Method(POST, GET, PUT, DELETE)를 통해 해당 자원에 대한 CRUD가 이루어진다.
