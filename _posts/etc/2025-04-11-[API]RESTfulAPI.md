@@ -152,24 +152,6 @@ Roy Fielding은 uniform interface의 구성 요소를 아래와 같이 정의한
 
 자원을 이름으로 구분하여 해당 자원에 대한 정보를 주고 받으며, URI를 통해 자원을 명시하고 HTTP Method(POST, GET, PUT, DELETE)를 통해 해당 자원에 대한 CRUD가 이루어진다.
 
-> URI와 URL
->
-> URI(Uniform Resource Identifier)
->
-> 네트워크상에 존재하는 자원(Resource)을 식별하는 고유 문자열을 의미한다.
->
-> `ex) studylog.kym1n.com`
->
-> URL(Uniform Resource Location)
->
-> 네트워크 상에 존재하는 자원의 위치를 나타내기 위한 규약으로 식별자와 위치를 동시에 보여준다.
->
-> 즉, 어떻게 위치를 찾고 도달할 수 있는지까지 포함되어야 하기 때문에 URL은 프로토콜 + 이름(또는 번호)의 형태여야 한다.
->
-> `ex) https://studylog.kym1n.com`
->
-> URI가 더 포괄적인 개념이며 URL은 이 안에 포함된다.
-
 
 
 ## REST API
