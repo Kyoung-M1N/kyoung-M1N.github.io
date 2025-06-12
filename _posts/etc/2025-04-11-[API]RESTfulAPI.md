@@ -213,9 +213,7 @@ REST의 특징을 기반으로 서비스 API를 구현한 것으로, 웹 애플�
 
   클라이언트에게 요청에 대한 피드백을 제공해야한다.
 
-## RESTful API
 
-RESTful API는 REST의 설계 규칙을 잘 지켜서 설계된 API를 말하며 이해하기 쉽고 사용하기 쉬운 REST API를 만드는 것을 목적으로 한다.
 
 ### **HATEOAS (Hypermedia As The Engine Of Application State)**
 
