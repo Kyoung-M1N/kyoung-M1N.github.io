@@ -146,14 +146,6 @@ Roy Fielding은 uniform interface의 구성 요소를 아래와 같이 정의한
 
 
 
-### **HATEOAS(Hypermedia As The Engine Of Application State)**
-
----
-
-자원을 이름으로 구분하여 해당 자원에 대한 정보를 주고 받으며, URI를 통해 자원을 명시하고 HTTP Method(POST, GET, PUT, DELETE)를 통해 해당 자원에 대한 CRUD가 이루어진다.
-
-
-
 ## REST API
 
 REST의 특징을 기반으로 서비스 API를 구현한 것으로, 웹 애플리케이션이 제공하는 각각의 데이터를 리소스, 즉 자원으로 간주하고 각각의 자원에 고유한 URI를 할당함으로써 이를 표현하는 API를 정의하기 위한 소프트웨어 아키텍처 스타일이다.
