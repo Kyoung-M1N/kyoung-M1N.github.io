@@ -71,17 +71,5 @@ title: About
 
 
 
-- 굿밥(Goodbap)
-
-  `Spring` `MySQL` `AWS`
-
-  - 기간 : 24.01.21 ~ 24.03.01
-  - 내용 : 찐 로컬 맛집을 찾기 위한 지도 서비스
-  - 링크 : [https://github.com/Goodbap](https://github.com/Goodbap)
-
-
-
-
-
 ###  **Github Contributions**
 ![github-contributions](https://ghchart.rshah.org/Kyoung-M1N)
