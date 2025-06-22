@@ -241,7 +241,7 @@ public class MemberContorller {
 }
 ```
 
-```
+```json
 // 기존 응답
 {
 	"userId" : "kymin@email.com",
@@ -249,8 +249,8 @@ public class MemberContorller {
 }
 ```
 
-```
-// HATEOAS 적용
+```json
+// HATEOAS 적용 후
 {
 	"userId" : "kymin@email.com",
 	"username" : "kymin"
