@@ -209,7 +209,7 @@ HATEOAS는 서버와 클라이언트가 동적인 상호작용을 할 수 있도
 
 아래와 같이 `build.gradle`을 수정하여 의존성 추가
 
-```
+```groovy
 dependencies {
 	...
 	implementation 'org.springframework.boot:spring-boot-starter-hateoas'
