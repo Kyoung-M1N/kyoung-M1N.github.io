@@ -1,7 +1,7 @@
 ---
 title: RESTful API
 author: kymin
-date: 2025-04-11 16:38
+date: 2025-04-10 16:38
 categories: [Etc, API]
 tags: [api]
 
