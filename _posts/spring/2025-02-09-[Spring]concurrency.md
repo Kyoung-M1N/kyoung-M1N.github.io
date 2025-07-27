@@ -1,0 +1,325 @@
+---
+title: 동시성 문제와 해결방법
+author: kymin
+date: 2025-02-09 13:58
+categories: [Spring]
+tags: [spring, web, java]
+
+
+---
+
+## **동시성 문제**
+
+### **동시성(Concurrency)**
+
+동시성은 두 사건이 같은 시간에 발생하는 것을 의미한다.
+
+웹 서버는 여러 명의 사용자가 보낸 요청을 동시에 처리하며, 이는 작성한 코드에 의해 구현된 기능이 동시에 작동할 수 있다는 것을 의미한다.
+
+동시성 문제는 경쟁 조건에 놓여있는 기능이 동시에 여러 번 동작하는 경우에 발생한다.
+
+> **경쟁 조건(Race Condition)**
+>
+> 경쟁 조건은 여러 개의 프로세스나 스레드가 동일한 데이터에 접근하여 값을 조작할 때 타이밍이나 접근 순서에 따라 예상하는 결과와 다른 결과가 나타날 수 있는 조건을 의미한다.
+
+동시성 문제는 예상한 결과와 실제 결과가 다르게 나오지만 오류가 발생하지 않기 때문에 알아내기 어렵다.
+
+또한 실제 로컬에서 POSTMAN과 같은 도구를 이용하여 테스트 할 때에는 여러 명의 사용자가 동시에 요청을 보내는 경우를 만들어내기 힘들기 때문에 알아차리기 어렵다.
+
+예를 들어 아래와 같이 구현된 수강신청 서비스가 있다고 가정하고 동시성 문제가 발생하는 지 알아보기 위해 여러 개의 수강신청 등록 요청을 동시에 보내보았다.
+
+```java
+// controller
+public class LectureController {
+	@PostMapping(path = "/{lectureId}/{studentId}")
+	public ResponseEntity<String> register(
+			@PathVariable(name = "lectureId") final long lectureId,
+			@PathVariable(name = "studentId") final long studentId
+	) {
+		lectureService.registStudentToLecture(lectureId, studentId);
+		return ResponseEntity.status(HttpStatus.CREATED).body("수강신청이 완료되었습니다");
+	}
+}
+
+// service
+public class LectureService {
+	@Transactional
+	public void registStudentToLecture(final long lectureId, final long studentId) {
+		Lecture lecture = lectureRepository.findById(lectureId)
+				.orElseThrow(() -> new NullPointerException("강의가 존재하지 않습니다"));
+
+		Student student = studentRepository.findById(studentId)
+				.orElseThrow(() -> new NullPointerException("학생 정보가 존재하지 않습니다"));
+
+		if (lectureStudentRepository.existsByStudentAndLecture(student, lecture)) {
+			throw new IllegalArgumentException("이미 수강중인 강의입니다");
+		}
+		
+		lectureStudentRepository.save(LectureStudent.of(student, lecture));
+		lecture.registStudent();
+	}
+}
+
+// entity
+public class Lecture {
+	...
+	@Column(name = "remaining_seat", nullable = false)
+	private int remainingSeat;
+	...
+
+	public void registStudent() {
+		if (remainingSeat <= 0) {
+			throw new IllegalArgumentException("잔여 좌석이 없습니다");
+		}
+		this.remainingSeat -= 1;
+	}
+}
+```
+
+수강인원이 20명인 강의를 생성하고 jmeter를 이용하여 20명의 학생이 동시에 수강 신청을 하는 상황에 대한 요청을 발생시킨 뒤의 결과는 아래와 같다.
+
+```sql
++----------------+------------+------------+-----------------------+
+| remaining_seat | total_seat | lecture_id | title                 |
++----------------+------------+------------+-----------------------+
+|              3 |         20 |          1 | 컴퓨터구조              |
++----------------+------------+------------+-----------------------+
+```
+
+수강인원이 20명인 강의에 20명의 학생이 수강 신청 요청을 보냈지만 3개의 요청이 누락된 것을 확인할 수 있다.
+
+위와 같이 요청이 누락된 원인은 아래와 같다.
+
+```
+SQL Error: 1213, SQLState: 40001
+Deadlock found when trying to get lock; try restarting transaction
+```
+
+로그에 따르면 lock을 가져오는 과정에서 Deadlock이 발생했다고 한다.
+
+```java
+public class LectureStudent {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long lectureStudentId;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "student_id")
+	private Student student;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "lecture_id")
+	private Lecture lecture;
+  ...
+}
+```
+
+데드락이 발생하는 이유는 수강 신청 요청으로 인해 생성되는 `lecture_student`테이블에 외래키 제약조건이 존재하기 때문이다.
+
+위의 엔티티는 학생 정보와 강의 정보를 다대다로 연결하기 위한 `LectureStudent`엔티티이다. 다대다 연관관계를 위해 학생 정보와 강의 정보에 각각 `@ManyToOne`의 연관관계가 설정되어 있으며 이에 따라 `lecture_student`테이블에 두 개의 외래키 제약조건이 발생한다.
+
+MySQL은 외래키 제약조건이 존재하는 테이블에 데이터가 생성, 수정, 삭제가 발생하면 외래키 제약조건의 위반 여부를 파악하기 위해 
+
+데드락이 발생하는 이유는 학생 정보와 강의 정보를 다대다로 연결하기 위한 `lecture_student`테이블에 수강 신청 요청으로 인해 생성이 발생하면 
+
+
+
+아래의 명령어를 이용하여 위와 같이 구현된 수강신청 등록 기능을 동시에 여러 번 호출하였다.
+
+```shell
+curl -X POST 'http://localhost:8080/lecture/regist/1' & curl -X POST 'http://localhost:8080/lecture/regist/1'
+```
+
+두 번 호출했기 때문에 결과적으로 강의를 수강하는 학생의 수는 2가 증가해야 한다.
+
+```mysql
+Hibernate: 
+    update
+        lecture 
+    set
+        name=?,
+        registered_student=?,
+        total_registable=? 
+    where
+        lecture_id=?
+Hibernate: 
+    update
+        lecture 
+    set
+        name=?,
+        registered_student=?,
+        total_registable=? 
+    where
+        lecture_id=?
+```
+
+요청을 처리하기 위해 update쿼리가 두 번 호출되었지만 두 개의 트랜잭션이 어느 한 요청의 트랜잭션이 커밋되기 이전의 값을 읽어왔기 때문에 데이터베이스에는 1만큼만 증가하게 된다.
+
+### **synchronized를 메서드에 적용**
+
+`synchronized`는 자바에서 지원하는 기능으로 멀티스레드 환경에서 여러 개의 스레드간의 동기화를 진행하기 위해 사용한다.
+
+여러 개의 스레드가 하나의 데이터에 접근하여 값을 수정하면 해당 스레드의 동작이 끝나기 전에 다른 스레드에서는 바뀐 데이터의 값을 알 수 없기 때문에 데이터에 접근하여 값을 수정하는 기능을 하는 메서드나 필드에 `synchronized`키워드를 추가하여 쓰레드 간의 데이터 동기화를 진행한다.
+
+`synchronized`키워드를 사용하면
+
+모니터 객체가 공유 자원에 다른 스레드가 접근할 수 없도록 락을 걸어버린다.
+
+자바가 내부적으로 메서드나 필드에 block처리를 하여 다른 스레드에서 접근할 수 없도록 하고 작업이 끝나면 unblock처리를 하여 다른 스레드가 접근 가능하도록 한다.
+
+동기화를 통해 특정 데이터에 block이 걸리면 해당 데이터에 접근하려는 다른 스레드들은 대기 해야하므로 동시 접근이 많아질 수록 성능이 저하될 수 있다.
+
+동시성 문제에 대응하기 위해 서비스의 메서드에 `synchronized`키워드를 추가한다.
+
+```java
+// service
+public class LectureService {
+  @Transactional
+  public synchronized void regist(Long lectureId) {
+    // 조회 과정에서 영속성 컨텍스트의 스냅샷을 읽고 스냅샷에 걸린 락이 바로 풀려서 커밋 전에 다른 트랜잭션이 스냅샷을 읽는 것이 가능하다.
+    Lecture lecture = lectureReposutory.findById(lectureId).orElseThrow(() -> new NullPointerException("강의가 존재하지 않습니다."));
+    lecture.incrementRegisteredStudent();
+  }
+}
+```
+
+위와 같이 수정한 뒤에도 동시성 문제는 해결되지 않는 것을 확인할 수 있다.
+
+그 이유는 synchronized로 인해 공통 데이터에 락이 걸리기 전에 먼저 transaction이 시작되고 transaction이 시작되는 과정에서 이미 공통 데이터에 접근하여 값을 읽고 수정했기 때문이다
+
+따라서 synchronized를 이용하여 동시성 문제를 해결하기 위해서는 transaction이 사작되기 전에 synchronized 키워드가 적용된 메서드의 호출이 발생해야한다.
+
+- controller호출에 synchronized 적용하기
+
+  ```java
+  // controller
+  public class LectureController {
+    @PostMapping("/lecture/regist/{lectureId}")
+    // synchronized가 락을 하는 대상이 lectureService.regist()이기 때문에 동시성 문제가 해결됨
+    public synchronized ResponseEntity<?> registLecture(@PathVariable Long lectureId) {
+      try {
+        lectureService.regist(lectureId);
+        return ResponseEntity.status(HttpStatus.OK).body("수강 신청이 등록되었습니다.");
+      } catch (NullPointerException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+      }
+    }
+  }
+  ```
+
+  
+
+- 서비스 레이어에서 @Transactional어노테이션을 지우고 직접 조회, 저장 기능 구현
+
+  ```java
+  // service
+  public class LectureService {
+    public synchronized void regist(Long lectureId) {
+      Lecture lecture = lectureReposutory.findById(lectureId).orElseThrow(() -> new NullPointerException("강의가 존재하지 않습니다."));
+      lecture.incrementRegisteredStudent();
+      // @Transactional을 없애고 직접 save를 하면 save에서 스냅샷과 영속성 컨텍스트의 값을 비교 후 바로 flush하는 과정으로 인해 동시성 문제가 해결된다.
+      lectureReposutory.save(lecture);	// 직접 save 추가
+      // 또는 lectureReposutory.flush()를 해도 된다.
+    }
+  }
+  ```
+
+출력되는 쿼리문을 보면 select -> select -> update -> update순으로 동작하던 기존과 달리 select -> update -> select -> update로 동작 순서가 직렬 처리된 것을 알 수 있다.
+
+둘 다 컨트롤러, 서비스 레이어의 메서드의 동작 과정에서 동시에 발생하는 모든 요청이 하나씩 순차적으로 처리되므로 다른 스레드가 대기해야하고 이로 인해 성능 저하가 발생한다.
+
+또한 동일한 프로세스 내의 스레드들 사이에서만 동작하기 때문에 서버가 여러 대로 분산되어잇는 경우에는 동시성 문제가 해결되지 않는다.
+
+
+
+
+
+
+
+A요청의 읽기 B요청의 읽기 A요청의 수정 B요청의 수정 A요청의 커밋 B요청의 커밋 순으로 발생함
+
+synchronized를 적용하여 문제를 해결하려면 트랜잭션이 열리기 이전에 synchronized가 적용되어야함
+
+
+
+synchronized는 동일한 프로세스 내의 스레드에게만 적용되기 때문에 여러 대의 서버가 있는 상황에서는 동일한 데이터베이스에 접근하더라도 다른 프로세스 단위에서 접근하기 때문에 단일 쓰레드만 접근하도록 제한하는 방법으로는 해결할 수 없음
+
+### **트랜잭션의 전파 속성을 이용한 동시성 문제 해결**
+
+트랜잭션의 전파는 트랜잭션이 어떻게 동작할 것인가를 결정하는 방식을 의미한다.
+
+앞선 설명에서 다른 스레드이므로 다른 트랜잭션이 열린다.
+
+다른 스레드이므로 이미 존재하는 트랜잭션의 값을 읽어올 수 없다..?
+
+다른 스레드의 트랜잭션이 변경한 값을 읽어오는 게 가능한지는 알아봐여함
+
+- 이미 존재하는 트랜잭션에 참여
+
+  이미 존재하는 트랜잭션에 참여하여 같은 트랜잭션 안에서 작업을 수행한다.
+
+  하나의 작업에만 rollback이 발생해도 같은 트랜잭션 내의 모든 작업들이 rollback된다.
+
+  
+
+- 독립적인 트랜잭션을 생성
+
+  이미 트랜잭션이 존래하거나 트랜잭션이 없는 상황에서 새로운 트랜잭션을 추가하여 작업을 진행한다.
+
+  두 작업은 독립적으로 동작한다.
+
+- 트랜잭션 없이 동작
+
+  단순 읽기와 같이 트랜잭션이 필요하지 않은 특정 작업에 대해 트랜잭션을 걸지 않는다
+
+### **트랜잭션의 격리 수준을 이용한 동시성 문제 해결**
+
+- DEFAULT
+
+  현재 사용 중인 DBMS의 데이터 접근 기술이나 DB 드라이버의 기본 설정을 적용하는 격리 수준으로 대부분의 DB는 READ_COMMITTED를 기본 격리 수준으로 가진다.
+
+- READ_UNCOMMITTED
+
+  가장 낮은 단계의 격리 수준으로 트랜잭션이 커밋하기 전에 미리 변경된 값을 읽을 수 있다.
+
+  다른 스레드라면 읽을 수 없다..?
+
+- READ_COMMITTED
+
+  대부분의 DB에서 기본적으로 사용하는 격리 수준으로 다른 트랜잭션이 커밋하지 않은 정보를 읽을 수 없다.
+
+- REPEATABLE_READ
+
+  한 트랜잭션이 읽은 ROW를 수정할 수 없도록 막지만 새로운 ROW의 생성은 막지 않음
+
+- SERIALIZABLE
+
+  동시에 여러 개의 트랜잭션이 테이블에 접근할 수 없도록 설정, 트랜잭션이 순차적으로 실행되도록 한다.
+
+  한 트랜잭션이 테이블에 접근하면 읽기락을 먼저 걸고 쓰기 락을 걸어버린다.
+
+  
+
+  데드락 에러가 발생한다.
+
+  아마도 여러 트랜잭션이 동시에 락을 걸수 있는 상황이 발생하고 이로 인해 서로 락이 풀리기 기다리는 상황이 발생하며 접ㄱㄴ이 불가능해지는 문제가 생기기 때문?
+
+  트랜잭션이 동시에 
+
+### **락을 이용한 동시성 문제 해결**
+
+- 낙관적 락(Optimistic Lock)
+
+  대부분의 트랜잭션이 충돌하지 않는다고 가정하는 방법으로 
+
+- 비관적 락(Pessimistic Lock)
+
+  대부분의 트랜잭션이 충돌할 것이라고 가정하는 방법으로 
+
+-----
+
+##### 참고자료 :
+
+[https://zzang9ha.tistory.com](https://zzang9ha.tistory.com/443)
+
+[https://tecoble.techcourse.co.kr](https://tecoble.techcourse.co.kr/post/2023-08-16-concurrency-managing/)
