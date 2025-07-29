@@ -1,5 +1,5 @@
 ---
-title: 동시성 문제와 해결방법
+title: 동시성 문제와 교착 상태
 author: kymin
 date: 2025-02-09 13:58
 categories: [Spring]
