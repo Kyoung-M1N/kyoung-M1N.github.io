@@ -11,8 +11,6 @@ title: About
 
 
 
-
-
 ### Experience
 
 - [SOPT](https://www.sopt.org/) \| 36th 서버 YB \| 25.03 - 25.07
