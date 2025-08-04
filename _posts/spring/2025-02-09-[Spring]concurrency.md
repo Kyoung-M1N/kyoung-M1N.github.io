@@ -180,48 +180,62 @@ public class LectureStudent {
 
 결과적으로 update 쿼리는 30번 발생했지만, 같은 값을 읽은 여러 개의 트랜잭션이 1을 더한 값을 커밋했기 때문에 같은 값들이 업데이트 되면서 20명이라는 수강 인원 제한이 정상적으로 동작하지 않은 것이다.
 
+### **순차적으로 요청 처리**
 
+`synchronized` 키워드를 이용하여 동시 발생으로 인해 여러 스레드에서 처리되는 요청을 순차적으로 처리해보았다.
 
+```java
+public class LectureService {
+  @Transactional
+	public synchronized void registStudentToLecture(final long lectureId, final long studentId) {
+		if(!studentRepository.existsById(studentId)) {
+			throw new NullPointerException("학생 정보가 존재하지 않습니다");
+		}
 
+		Lecture lecture = lectureRepository.findById(lectureId)
+				.orElseThrow(() -> new NullPointerException("강의가 존재하지 않습니다"));
 
+		if (lectureStudentRepository.existsByStudentIdAndLectureId(studentId, lectureId)) {
+			throw new IllegalArgumentException("이미 수강중인 강의입니다");
+		}
 
-
-
-
-
-
-
-
-아래의 명령어를 이용하여 위와 같이 구현된 수강신청 등록 기능을 동시에 여러 번 호출하였다.
-
-```shell
-curl -X POST 'http://localhost:8080/lecture/regist/1' & curl -X POST 'http://localhost:8080/lecture/regist/1'
+		lectureStudentRepository.save(LectureStudent.of(lectureId, studentId));
+		lecture.registStudent();
+	}
+}
 ```
 
-두 번 호출했기 때문에 결과적으로 강의를 수강하는 학생의 수는 2가 증가해야 한다.
+위와 같이 메서드를 변경하고 실행한 결과 `synchronized`가 없을 때, 30명의 학생이 수강 신청을 보냈음에도  `remaining_seat`이 0이 되지 않고 모두 등록되던 것과 달리 `remaining_seat`가 0이 되고 이후 요청에서 의도한 대로 예외가 발생하는 것을 확인할 수 있었다.
 
-```mysql
-Hibernate: 
-    update
-        lecture 
-    set
-        name=?,
-        registered_student=?,
-        total_registable=? 
-    where
-        lecture_id=?
-Hibernate: 
-    update
-        lecture 
-    set
-        name=?,
-        registered_student=?,
-        total_registable=? 
-    where
-        lecture_id=?
+```sql
++----------------+------------+------------+-----------------------+
+| remaining_seat | total_seat | lecture_id | title                 |
++----------------+------------+------------+-----------------------+
+|              0 |         20 |          1 | 컴퓨터구조              |
++----------------+------------+------------+-----------------------+
 ```
 
-요청을 처리하기 위해 update쿼리가 두 번 호출되었지만 두 개의 트랜잭션이 어느 한 요청의 트랜잭션이 커밋되기 이전의 값을 읽어왔기 때문에 데이터베이스에는 1만큼만 증가하게 된다.
+하지만 여전히 수강 인원인 20명 보다 많은 인원이 등록되는 것을 확인하였고, 여전히 요청이 병렬로 처리되고 있음을 알 수 있었다.
+
+> `synchronized` 키워드를 사용하면 싱글톤으로 동작하는 스프링 빈의 메서드가 여러 스레드에서 동기화되면서 순차적으로 동작하지만, 현재 스프링 빈에 등록되어 싱글톤으로 동작하는 `LectureService`의 메서드가 병렬로 동작하는 것을 확인할 수 있었다.
+
+`synchronized` 키워드가 있음에도 스프링 빈에 등록되어 싱글톤으로 동작하는 `LectureService`의 메서드가 순차적으로 처리되지 않는 이유는 해당 메서드가 트랜잭션 내에서 동작하기 때문이다.
+
+`@Transactional`은 AOP로 동작하게 된다. 따라서 해당 키워드가 존재하는 메서드가 호출되면 AOP프록시가 먼저 메서드의 호출을 가로채고 트랜잭션을 시작한 뒤에 메서드를 실행하게 된다. 이 때 `synchronized`는 AOP 프록시 객체가 담당하는 트랜잭션의 제어가 아닌 해당 키워드가 존재하는 메서드에만 스레드 락을 설정하게 된다. 따라서 여러 스레드에서 동작하는 트랜잭션이 `synchronized` 키워드가 있는 메서드를 순차적으로 처리하더라도, 다른 트랜잭션에서 해당 메서드의 동작이 완료되고 트랜잭션이  커밋되기 전에 메서드가 실행되어 데이터베이스의 값을 읽어오기 때문에 스레드 동기화로 인한 순차 처리의 효과가 완전하게 나타나지 않는 것이다.
+
+즉 A, B트랜잭션이 동작을 하게되는 경우, A 트랜잭션 시작, B 트랜잭션 시작, A가 `synchronized`메서드 호출, B는 A에서 `synchronized`메서드의 동작이 끝날 때 까지 대기 후 호출, A 트랜잭션 커밋, B 트랜잭션 커밋 순으로 동작하여 스레드 동기화를 적용해도 원하는대로 동작하지 않는다.
+
+
+
+
+
+
+
+
+
+
+
+
 
 ### **synchronized를 메서드에 적용**
 
