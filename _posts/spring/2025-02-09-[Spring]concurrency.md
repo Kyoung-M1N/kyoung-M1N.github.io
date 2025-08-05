@@ -56,9 +56,10 @@ public class LectureService {
 		if (lectureStudentRepository.existsByStudentAndLecture(student, lecture)) {
 			throw new IllegalArgumentException("이미 수강중인 강의입니다");
 		}
+    
+		lecture.registStudent();
 		
 		lectureStudentRepository.save(LectureStudent.of(student, lecture));
-		lecture.registStudent();
 	}
 }
 
@@ -186,6 +187,7 @@ public class LectureStudent {
 
 ```java
 public class LectureService {
+  ...
   @Transactional
 	public synchronized void registStudentToLecture(final long lectureId, final long studentId) {
 		if(!studentRepository.existsById(studentId)) {
@@ -198,10 +200,12 @@ public class LectureService {
 		if (lectureStudentRepository.existsByStudentIdAndLectureId(studentId, lectureId)) {
 			throw new IllegalArgumentException("이미 수강중인 강의입니다");
 		}
+    
+		lecture.registStudent();
 
 		lectureStudentRepository.save(LectureStudent.of(lectureId, studentId));
-		lecture.registStudent();
 	}
+  ...
 }
 ```
 
@@ -221,96 +225,103 @@ public class LectureService {
 
 `synchronized` 키워드가 있음에도 스프링 빈에 등록되어 싱글톤으로 동작하는 `LectureService`의 메서드가 순차적으로 처리되지 않는 이유는 해당 메서드가 트랜잭션 내에서 동작하기 때문이다.
 
-`@Transactional`은 AOP로 동작하게 된다. 따라서 해당 키워드가 존재하는 메서드가 호출되면 AOP프록시가 먼저 메서드의 호출을 가로채고 트랜잭션을 시작한 뒤에 메서드를 실행하게 된다. 이 때 `synchronized`는 AOP 프록시 객체가 담당하는 트랜잭션의 제어가 아닌 해당 키워드가 존재하는 메서드에만 스레드 락을 설정하게 된다. 따라서 여러 스레드에서 동작하는 트랜잭션이 `synchronized` 키워드가 있는 메서드를 순차적으로 처리하더라도, 다른 트랜잭션에서 해당 메서드의 동작이 완료되고 트랜잭션이  커밋되기 전에 메서드가 실행되어 데이터베이스의 값을 읽어오기 때문에 스레드 동기화로 인한 순차 처리의 효과가 완전하게 나타나지 않는 것이다.
+`@Transactional`은 AOP로 동작하게 된다. 따라서 해당 키워드가 존재하는 메서드가 호출되면 AOP프록시가 먼저 메서드의 호출을 가로채고 트랜잭션을 시작한 뒤에 메서드를 실행하게 된다. 이 때 `synchronized`는 AOP 프록시 객체가 담당하는 트랜잭션의 제어가 아닌 해당 키워드가 존재하는 메서드에만 모니터 락을 설정하게 된다. 따라서 여러 스레드에서 동작하는 트랜잭션이 `synchronized` 키워드가 있는 메서드를 순차적으로 처리하더라도, 다른 트랜잭션에서 해당 메서드의 동작이 완료되고 트랜잭션이  커밋되기 전에 메서드가 실행되어 데이터베이스의 값을 읽어오기 때문에 스레드 동기화로 인한 순차 처리의 효과가 완전하게 나타나지 않는 것이다.
+
+> `synchronized` 키워드를 사용하면 공유 자원에 대한 접근을 제어하는 객체인 모니터(Monitor)에 의해 스레드가 모니터 락을 획득 및 반환하며 스레드 동기화가 이루어진다.
 
 즉 A, B트랜잭션이 동작을 하게되는 경우, A 트랜잭션 시작, B 트랜잭션 시작, A가 `synchronized`메서드 호출, B는 A에서 `synchronized`메서드의 동작이 끝날 때 까지 대기 후 호출, A 트랜잭션 커밋, B 트랜잭션 커밋 순으로 동작하여 스레드 동기화를 적용해도 원하는대로 동작하지 않는다.
 
+따라서 `synchronized`를 통해 요청을 순차적으로 처리하기 위해서는 아래와 같이 트랜잭션이 제어되는 부분까지 `synchronized`의 범위에 포함시켜야 한다.
 
+- service의 메서드를 호출하는 controller에서 synchronized 적용하기
 
+  ```java
+  public class LectureController {
+  	private final LectureService lectureService;
+    ...
+    @PostMapping(path = "/{lectureId}/{studentId}")
+  	public synchronized ResponseEntity<String> register(
+  			@PathVariable(name = "lectureId") final long lectureId,
+  			@PathVariable(name = "studentId") final long studentId
+  	) {
+  		lectureService.registStudentToLecture(lectureId, studentId);
+  		return ResponseEntity.status(HttpStatus.CREATED).body("수강신청이 완료되었습니다");
+  	}
+  }
+  ```
 
+- 내부적으로 `@Transactional`을 사용하는 메서드로 직접 트랜잭션 제어
 
+  ```java
+  public class LectureService {
+    ...
+  	public synchronized void registStudentToLecture(final long lectureId, final long studentId) {
+  		if(!studentRepository.existsById(studentId)) {
+  			throw new NullPointerException("학생 정보가 존재하지 않습니다");
+  		}
+  
+  		Lecture lecture = lectureRepository.findById(lectureId)
+  				.orElseThrow(() -> new NullPointerException("강의가 존재하지 않습니다"));
+  
+  		if (lectureStudentRepository.existsByStudentIdAndLectureId(studentId, lectureId)) {
+  			throw new IllegalArgumentException("이미 수강중인 강의입니다");
+  		}
+      
+  		lecture.registStudent();
+      // 내부적으로 @Transactional을 사용하는 save를 사용하여 더티체크하고 저장
+      lectureRepository.save(lecture);
+      
+  		lectureStudentRepository.save(LectureStudent.of(lectureId, studentId));
+  	}
+    ...
+  }
+  ```
 
+위의 두 방식으로 변경한 뒤에 30명의 학생이 수강 인원이 20명인 강의에 대해 동시에 수강 신청을 하는 경우를 테스트한 결과, 의도한대로 20명의 학생만 수강 신청이 이루어지고 이후에는 예외가 발생하는 것을 확인할 수 있다.
 
+하지만 위와 같이 동시에 발생한 요청을 순차적으로 처리하는 방법에는 몇가지 단점이 존재한다.
 
+`synchronized`는 스레드 동기화를 위해 메서드에 스레드 락을 설정하므로 다른 스레드에서 해당 메서드를 호출하여 동작 중인 경우에 다른 스레드들은 대기해야 한다. 따라서 동시 요청이 많을 수록 스레드의 대기 시간이 늘어나기 때문에 성능 저하가 발생할 수 있다.
 
+또한 `synchronized`는 동일한 프로세스에서의 스레드에서만 동기화가 적용되기 때문에 서버가 여러 대로 분산된 환경에서는 데이터의 정합성이 깨지며 동시성 문제를 해결할 수 없게 된다.
 
+### **트랜잭션 격리 수준 이용**
 
-
-
-### **synchronized를 메서드에 적용**
-
-`synchronized`는 자바에서 지원하는 기능으로 멀티스레드 환경에서 여러 개의 스레드간의 동기화를 진행하기 위해 사용한다.
-
-여러 개의 스레드가 하나의 데이터에 접근하여 값을 수정하면 해당 스레드의 동작이 끝나기 전에 다른 스레드에서는 바뀐 데이터의 값을 알 수 없기 때문에 데이터에 접근하여 값을 수정하는 기능을 하는 메서드나 필드에 `synchronized`키워드를 추가하여 쓰레드 간의 데이터 동기화를 진행한다.
-
-`synchronized`키워드를 사용하면
-
-모니터 객체가 공유 자원에 다른 스레드가 접근할 수 없도록 락을 걸어버린다.
-
-자바가 내부적으로 메서드나 필드에 block처리를 하여 다른 스레드에서 접근할 수 없도록 하고 작업이 끝나면 unblock처리를 하여 다른 스레드가 접근 가능하도록 한다.
-
-동기화를 통해 특정 데이터에 block이 걸리면 해당 데이터에 접근하려는 다른 스레드들은 대기 해야하므로 동시 접근이 많아질 수록 성능이 저하될 수 있다.
-
-동시성 문제에 대응하기 위해 서비스의 메서드에 `synchronized`키워드를 추가한다.
+다음으로 트랜잭션 격리 수준을 SERIALIZABLE로 설정하여 분산 서버 환경에서도 동시성 문제를 해결할 수 있는지 확인해보기 위해 아래와 같이 변경해보았다.
 
 ```java
-// service
 public class LectureService {
-  @Transactional
-  public synchronized void regist(Long lectureId) {
-    // 조회 과정에서 영속성 컨텍스트의 스냅샷을 읽고 스냅샷에 걸린 락이 바로 풀려서 커밋 전에 다른 트랜잭션이 스냅샷을 읽는 것이 가능하다.
-    Lecture lecture = lectureReposutory.findById(lectureId).orElseThrow(() -> new NullPointerException("강의가 존재하지 않습니다."));
-    lecture.incrementRegisteredStudent();
-  }
+  ...
+  @Transactional(isolation = Isolation.SERIALIZABLE)
+	public void registStudentToLecture(final long lectureId, final long studentId) {
+		if(!studentRepository.existsById(studentId)) {
+			throw new NullPointerException("학생 정보가 존재하지 않습니다");
+		}
+
+		Lecture lecture = lectureRepository.findById(lectureId)
+				.orElseThrow(() -> new NullPointerException("강의가 존재하지 않습니다"));
+
+		if (lectureStudentRepository.existsByStudentIdAndLectureId(studentId, lectureId)) {
+			throw new IllegalArgumentException("이미 수강중인 강의입니다");
+		}
+    
+		lecture.registStudent();
+
+		lectureStudentRepository.save(LectureStudent.of(lectureId, studentId));
+	}
+  ...
 }
 ```
 
-위와 같이 수정한 뒤에도 동시성 문제는 해결되지 않는 것을 확인할 수 있다.
+위와 같이 변경한 뒤에  30명의 학생이 수강 인원이 20명인 강의에 대해 동시에 수강 신청을 하는 경우를 테스트한 결과, 비교적 동시성 처리가 잘 되는듯 하지만 중간에 데드락이 발생한다.
 
-그 이유는 synchronized로 인해 공통 데이터에 락이 걸리기 전에 먼저 transaction이 시작되고 transaction이 시작되는 과정에서 이미 공통 데이터에 접근하여 값을 읽고 수정했기 때문이다
+데드락이 발생하는 이유는 SERIALIZABLE이 실제 트랜잭션의 실행을 직렬로 처리하는 것이 아니라 내부적으로 락이나 트랜잭션 스케줄링 등을 이용하여 트랜잭션들이 순차적으로 실행된 것처럼 보이도록 결과를 직렬화하기 때문이다.
 
-따라서 synchronized를 이용하여 동시성 문제를 해결하기 위해서는 transaction이 사작되기 전에 synchronized 키워드가 적용된 메서드의 호출이 발생해야한다.
+따라서 데이터베이스에 접근하는 과정에서 레코드에 공유락을 설정하고 외래키 제약조건이 설정된 경우와 같이 공유락을 획득한 여러 트랜잭션이 배타적 락으로의 전환을 대기하며 데드락이 발생하여 교착 상태가 발생한다.
 
-- controller호출에 synchronized 적용하기
+또한 SERIALIZABLE은 
 
-  ```java
-  // controller
-  public class LectureController {
-    @PostMapping("/lecture/regist/{lectureId}")
-    // synchronized가 락을 하는 대상이 lectureService.regist()이기 때문에 동시성 문제가 해결됨
-    public synchronized ResponseEntity<?> registLecture(@PathVariable Long lectureId) {
-      try {
-        lectureService.regist(lectureId);
-        return ResponseEntity.status(HttpStatus.OK).body("수강 신청이 등록되었습니다.");
-      } catch (NullPointerException e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-      }
-    }
-  }
-  ```
-
-  
-
-- 서비스 레이어에서 @Transactional어노테이션을 지우고 직접 조회, 저장 기능 구현
-
-  ```java
-  // service
-  public class LectureService {
-    public synchronized void regist(Long lectureId) {
-      Lecture lecture = lectureReposutory.findById(lectureId).orElseThrow(() -> new NullPointerException("강의가 존재하지 않습니다."));
-      lecture.incrementRegisteredStudent();
-      // @Transactional을 없애고 직접 save를 하면 save에서 스냅샷과 영속성 컨텍스트의 값을 비교 후 바로 flush하는 과정으로 인해 동시성 문제가 해결된다.
-      lectureReposutory.save(lecture);	// 직접 save 추가
-      // 또는 lectureReposutory.flush()를 해도 된다.
-    }
-  }
-  ```
-
-출력되는 쿼리문을 보면 select -> select -> update -> update순으로 동작하던 기존과 달리 select -> update -> select -> update로 동작 순서가 직렬 처리된 것을 알 수 있다.
-
-둘 다 컨트롤러, 서비스 레이어의 메서드의 동작 과정에서 동시에 발생하는 모든 요청이 하나씩 순차적으로 처리되므로 다른 스레드가 대기해야하고 이로 인해 성능 저하가 발생한다.
-
-또한 동일한 프로세스 내의 스레드들 사이에서만 동작하기 때문에 서버가 여러 대로 분산되어잇는 경우에는 동시성 문제가 해결되지 않는다.
+### **데이터베이스 락 적용**
 
 
 
@@ -319,14 +330,6 @@ public class LectureService {
 
 
 A요청의 읽기 B요청의 읽기 A요청의 수정 B요청의 수정 A요청의 커밋 B요청의 커밋 순으로 발생함
-
-synchronized를 적용하여 문제를 해결하려면 트랜잭션이 열리기 이전에 synchronized가 적용되어야함
-
-
-
-synchronized는 동일한 프로세스 내의 스레드에게만 적용되기 때문에 여러 대의 서버가 있는 상황에서는 동일한 데이터베이스에 접근하더라도 다른 프로세스 단위에서 접근하기 때문에 단일 쓰레드만 접근하도록 제한하는 방법으로는 해결할 수 없음
-
-### **트랜잭션의 전파 속성을 이용한 동시성 문제 해결**
 
 트랜잭션의 전파는 트랜잭션이 어떻게 동작할 것인가를 결정하는 방식을 의미한다.
 
@@ -403,5 +406,7 @@ synchronized는 동일한 프로세스 내의 스레드에게만 적용되기 �
 ##### 참고자료 :
 
 [https://zzang9ha.tistory.com](https://zzang9ha.tistory.com/443)
+
+[https://mangkyu.tistory.com](https://mangkyu.tistory.com/299)
 
 [https://tecoble.techcourse.co.kr](https://tecoble.techcourse.co.kr/post/2023-08-16-concurrency-managing/)
