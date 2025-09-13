@@ -14,8 +14,8 @@ title: About
 ### Experience
 
 - [SOPT](https://www.sopt.org/) \| 36th 서버 YB \| 25.03 - 25.07
-- [LikeLion at Kwangwoon Univ](https://kwu-likelion.netlify.app/) \| 멋쟁이사자처럼 13기 광운대 부대표 \| 25.02 - current
-- [LikeLion at Kwangwoon Univ](https://kwu-likelion.netlify.app/) \|  멋쟁이사자처럼 12기 광운대 백엔드 아기사자 \| 24.03 - 24.12
+- [LikeLion at KWU](https://kwu-likelion.netlify.app/) \| 멋쟁이사자처럼 13기 광운대 부대표 \| 25.02 - current
+- [LikeLion at KWU](https://kwu-likelion.netlify.app/) \|  멋쟁이사자처럼 12기 광운대 백엔드 아기사자 \| 24.03 - 24.12
 
 
 
