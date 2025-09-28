@@ -60,15 +60,5 @@ title: About
 
 
 
-- 돈두댓(Don't do that)
-
-  `Spring` `MySQL` `Github Actions` `AWS` `JWT`
-
-  - 기간 : 24.06.21 ~ 24.08.06
-  - 내용 : 안 좋은 습관을 개선하기 위한 NOT TODO 리스트
-  - 링크 : [https://github.com/LikeLion-KW-TEAM2](https://github.com/LikeLion-KW-TEAM2)
-
-
-
 ###  **Github Contributions**
 ![github-contributions](https://ghchart.rshah.org/Kyoung-M1N)
