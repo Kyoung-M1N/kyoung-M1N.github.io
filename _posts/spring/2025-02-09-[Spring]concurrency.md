@@ -291,8 +291,8 @@ public class LectureService {
 
 ```java
 public class LectureService {
-  ...
-  @Transactional(isolation = Isolation.SERIALIZABLE)
+    ...
+    @Transactional(isolation = Isolation.SERIALIZABLE)
 	public void registStudentToLecture(final long lectureId, final long studentId) {
 		if(!studentRepository.existsById(studentId)) {
 			throw new NullPointerException("학생 정보가 존재하지 않습니다");
@@ -309,7 +309,7 @@ public class LectureService {
 
 		lectureStudentRepository.save(LectureStudent.of(lectureId, studentId));
 	}
-  ...
+    ...
 }
 ```
 
@@ -365,16 +365,36 @@ public class LectureService {
   Resolved [org.springframework.orm.ObjectOptimisticLockingFailureException: Row was updated or deleted by another transaction (or unsaved-value mapping was incorrect)
   ```
 
-  이를 해결하기 위해 아래와 같이 낙관적 락에서의 버전 불일치로 인한 트랜잭션 커밋 실패에 재시도 로직을 추가하였다.
+  이를 해결하기 위해 아래와 같이 낙관적 락에서의 버전 불일치로 인한 트랜잭션 커밋 실패에 대해 재시도 로직을 추가하였다.
 
   ```java
+  public class LectureService {
+      ...
+      @Retryable(
+  			retryFor = ObjectOptimisticLockingFailureException.class,
+  			maxAttempts = 5,
+  			backoff = @Backoff(delay = 500),
+  			recover = "recoverRegist"
+  	)
+      @Transactional
+  	public void registStudentToLecture(final long lectureId, final long studentId) {
+  		...
+  	}
+      ...
+      @Recover
+  	public void recoverRegist(final ObjectOptimisticLockingFailureException e, final long lectureId, final long studentId){
+          ...
+  	}
+  }
   ```
 
-  
+  재시도 로직을 추가한 뒤에 30명의 학생이 수강 인원이 20명인 강의에 대해 동시에 수강 신청을 하는 경우를 테스트한 결과, 버전 불일치에 의한 커밋 실패에 정상적으로 재시도 로직이 실행되며 동시성 문제가 해결되는 것을 확인할 수 있었다.
+
+  하지만 이는 요청에 대한 처리 결과가 요청 순서에 따라 보장되지 않고, 재시도의 성공 시점까지 포함하기 때문에 요청을 선착순으로 처리한다는 보장을 해주지 못 한다.
+
+- 비관적 락 이용
 
 
-
-A요청의 읽기 B요청의 읽기 A요청의 수정 B요청의 수정 A요청의 커밋 B요청의 커밋 순으로 발생함
 
 
 
