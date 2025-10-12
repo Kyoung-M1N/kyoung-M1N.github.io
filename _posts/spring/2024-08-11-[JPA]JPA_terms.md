@@ -1,5 +1,5 @@
 ---
-title: JPA 헷갈리는 개념들 정리
+title: JPA 용어 정리
 author: kymin
 date: 2024-08-11 19:31
 categories: [JPA]
