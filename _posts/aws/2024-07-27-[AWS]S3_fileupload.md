@@ -35,104 +35,136 @@ AWS S3는 아마존이 제동하는 객체 스토리지 서비스로 데이터�
   ```groovy
   dependencies {
       ...
-      implementation 'com.amazonaws:aws-java-sdk-s3:1.12.765'
+      implementation 'software.amazon.awssdk:s3:<version>'
     	...
   }
   ```
 
-- application.properties에 리소스 입력
+- application.yml에 리소스 입력
 
-  application.properties에 AWS의 기능을 사용하는 데에 필요한 값들을 넣어놓는다.
+  application.yml에 AWS의 기능을 사용하는 데에 필요한 값들을 넣어놓는다.
 
-  ```
+  ```yaml
   ...
-  cloud.aws.credentials.accessKey=[AWS IAM에서 발급받은 Access Key]
-  
-  cloud.aws.credentials.secretKey=[AWS IAM에서 발급받은 Secret Key]
-  
-  cloud.aws.s3.bucketName=[S3 버킷 이름]
-  
-  cloud.aws.region.static=[AWS S3의 Region]
-  
-  // AWS CloudFormation을 사용하지 않으므로 false
-  cloud.aws.stack.auto-=false
+  aws:
+    region: [AWS S3의 Region]
+    access-key: [AWS IAM에서 발급받은 Access Key]
+    secret-key: [AWS IAM에서 발급받은 Secret Key]
+    s3:
+      bucket-name: [S3 버킷 이름]
   ...
   ```
-
-  > EC2에서 Spring을 통래 S3의 기능을 사용할 경우에 AWS CloudFormation의 stack에 대한 설정을 시작하기 때문에 사용하지 않는다면 false로 꼭 적어야 한다.
-
+  
+  
+  
 - 코드 구현
 
-  먼저 AWS S3의 기능을 사용하기 위해 credential을 설정해주는 config파일을 만들고 빈으로 등록해준다.
+  먼저 AWS S3의 기능을 사용하기 위해 credential을 설정해주는 config파일을 만들고 `S3Client`를 빈으로 등록해준다.
 
   ```java
   @Configuration
   public class S3Config {
-      @Value("${cloud.aws.credentials.accessKey}")
-      private String accessKey;
-      @Value("${cloud.aws.credentials.secretKey}")
-      private String secretKey;
-      @Value("${cloud.aws.region.static}")
-      private String region;
+  	@Value("${aws.access-key}")
+  	private String accessKey;
   
-      @Bean
-      public AmazonS3 amazonS3() {
-          AWSCredentials credentials = new BasicAWSCredentials(accessKey, secretKey);
-          return AmazonS3ClientBuilder.standard()
-                  .withCredentials(new AWSStaticCredentialsProvider(credentials))
-                  .withRegion(region).build();
-      }
+  	@Value("${aws.secret-key}")
+  	private String secretKey;
+  
+  	@Value("${aws.region}")
+  	private String region;
+  
+  	@Bean
+  	public S3Client s3Client(){
+  		AwsBasicCredentials awsBasicCredentials = AwsBasicCredentials.create(accessKey, secretKey);
+  		return S3Client.builder()
+  				.credentialsProvider(StaticCredentialsProvider.create(awsBasicCredentials))
+  				.region(Region.of(region))
+  				.build();
+  	}
   }
   ```
-
+  
   다음으로 빈으로 등록된 config를 이용하여 S3에 대한 기능을 코드로 작성한다.
-
+  
   ```java
-  // 클라이언트에서 전달받은 userId로 파일 이름을 설정하고 버킷의 /image 디렉토리 내에 파일을 저장
+  @Component
   @RequiredArgsConstructor
-  public class S3Uploader {
-      private final AmazonS3 amazonS3;
+  public class ImageUploader {
+  	private static final List<String> ALLOWED_EXTENSIONS = Arrays.asList("jpg", "jpeg", "png");
+  	private final S3Client s3Client;
   
-      @Value("${cloud.aws.s3.bucketName}")
-      private String bucket;
+  	@Value("${aws.s3.bucket-name}")
+  	private String bucketName;
   
-    	// 파일 업로드
-      public String upload(MultipartFile multipartFile, String userId) {
-          try {
-              return putS3(multipartFile.getInputStream(), fileName, multipartFile.getSize());
-          } catch (IOException e) {
-              return "업로드 실패";
-          }
-      }
-    
-    	//파일 삭제
-    	public void delete(String userId) {
-          String fileName = "images/" + userId;
-          amazonS3.deleteObject(bucket, fileName);
-      }
+  	// https://tao-tech.tistory.com/27
   
-    	// 업로드 구현
-      private String putS3(InputStream inputStream, String fileName, long contentLength) {
-        ObjectMetadata metadata = new ObjectMetadata();
-          metadata.setContentLength(contentLength);
-
-          amazonS3.putObject(new PutObjectRequest(bucket, fileName, inputStream, metadata)
-                .withCannedAcl(CannedAccessControlList.PublicRead));
-        	// ACL설정을 PublicRead로 하여 다른 위치에서도 해당 파일에 접근 가능하도록 한다.
-          return amazonS3.getUrl(bucket, fileName).toString();
-      }
+  	public List<String> upload(final long memberId, final String contractId, final List<MultipartFile> images) {
+  		validateFiles(images);
+  
+  		return IntStream.range(0, images.size())
+  				.mapToObj(idx -> {
+                      // S3에 저장하기 위한 적절한 파일명 생성
+  					String filenameToUpload = memberId + "-" + contractId + "-" + idx;
+  					return uploadToS3(filenameToUpload, images.get(idx));
+  				})
+  				.toList();
+  	}
+  
+  	private void validateFiles(final List<MultipartFile> images) {
+  		images.forEach(image -> {
+  			String fileName = image.getOriginalFilename();
+  
+  			// 파일 존재 유무 검증
+  			if (fileName == null || fileName.isEmpty()) {
+  				throw new ImageFileNotFoundException();
+  			}
+  
+  			// 파일 확장자 존재 유무 검증
+  			if (fileName.lastIndexOf(".") == -1) {
+  				throw new FileExtensionNotFoundException();
+  			}
+  
+  			if (!ALLOWED_EXTENSIONS.contains(fileName.substring(fileName.lastIndexOf(".") + 1))) {
+  				throw new InvalidFileExtensionException();
+  			}
+  		});
+  	}
+  
+  	private String uploadToS3(final String filenameToUpload, MultipartFile image) {
+  
+  		String extension = Objects.requireNonNull(image.getOriginalFilename())
+  				.substring(image.getOriginalFilename().lastIndexOf(".") + 1);
+  
+  		try (InputStream inputStream = image.getInputStream()) {
+  			PutObjectRequest putObjectRequest = PutObjectRequest.builder()
+  					.bucket(bucketName)
+  					.key(filenameToUpload)
+  					.acl(ObjectCannedACL.PUBLIC_READ)
+  					.contentType("image/" + extension)
+  					.contentLength(image.getSize())
+  					.build();
+  			s3Client.putObject(putObjectRequest, RequestBody.fromInputStream(inputStream, image.getSize()));
+  		} catch (Exception e) {
+  			throw new RuntimeException(e);
+  		}
+  
+  		return s3Client.utilities()
+  				.getUrl(url -> url.bucket(bucketName).key(filenameToUpload)).toString();
+  	}
   }
   ```
   
-  이 때, S3에 객체를 전달할 때에는 클라이언트로부터 전달받은 `MultipartFile`타입의 객체를 전달하는 것이 아니라 파일의 `InputStream`을 전달하며, `metadata`를 함께 전달한다.
+  이 때, S3에 저장하기 위해 적절한 파일명을 생성하여 지정해주어야 한다. 보통은 UUID를 통해 생성하고 데이터베이스에 별도로 저장하는 방식을 사용한다.
+  
+  또한 S3에 객체를 전달할 때에는 클라이언트로부터 전달받은 `MultipartFile`타입의 객체를 전달하는 것이 아니라 파일의 `InputStream`을 전달한다.
   
   > `MultipartFile`타입의 객체를 `File`로 변환한 뒤에 `File`타입의 객체를 전달하는 방법도 있지만 파일을 전달하기 위한 임시파일을 생성해야 하므로 효율성이 떨어지게 된다.
   >
-  > `InputStream`을 통해 버킷에 파일을 업로드 하기 위해서는 반드시 `contentLength`를 `metadata`에 명시해 주어야 한다.
+  > `InputStream`을 통해 버킷에 파일을 업로드 하기 위해서는 반드시 `metadata`를 생성해야 했지만 업데이트 이후 `PutObjectRequest`가  `contentLength`와 같은  `metadata`를 포함하도록 변경되었다.
   
-  버킷에 이미 같은 이름의 파일이 존재하면 해당 파일을 덮어쓰기 처리되기 때문에 다르게 저장되어야 하는 파일의 이름이 중복되지 않도록 유의해야 한다.(필요하다면 UUID를 생성하여 파일명에 포함)
+  버킷에 이미 같은 이름의 파일이 존재하면 해당 파일을 덮어쓰기 처리되기 때문에 다르게 저장되어야 하는 파일의 이름이 중복되지 않도록 유의해야 한다.
   
-  또한 삭제 시 해당 파일이 버킷에 존재하지 않더라도 에러메시지 대신 성공메시지가 발생한다.
+  또한 삭제 시 해당 파일이 버킷에 존재하지 않더라도 에러 메시지 대신 성공 메시지가 발생한다.
 
 
 
