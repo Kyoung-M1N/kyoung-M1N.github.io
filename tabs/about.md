@@ -1,5 +1,6 @@
 ---
 title: About
+
 ---
 
 <!-- > **Note**: Add Markdown syntax content to file `tabs/about.md` and it will show up on this page. -->
@@ -40,13 +41,13 @@ title: About
 
 ### Projects
 
-- 에코비전(EcoVision)
+- 봉투백서
 
-  `Flutter` `Spring` `AWS`
+  `Spring` `MySQL`  `AWS` `JWT` `Docker` `Redis` `Docker`
 
-  - 기간 : 24.08.13 ~ 24.12.12
-  - 내용 : 거리 쓰레기 감소를 위한 플로깅 보조 어플리케이션
-  - 링크 : [https://github.com/KW-EcoVision](https://github.com/KW-EcoVision)
+  - 기간 : 25.06 ~ 
+  - 내용 : 사회초년생을 위한 맞춤형 경조사비 추천 가이드
+  - 링크 : [https://github.com/bongtubaekseo/BongBaek-Server](https://github.com/bongtubaekseo/BongBaek-Server)
 
 
 
@@ -54,11 +55,23 @@ title: About
 
   `Spring` `MySQL`  `AWS` `JWT` `WebSocket`
 
-  - 기간 : 24.11.13 ~ 24.11.16
+  - 기간 : 24.11 ~ 25.04
   - 내용 : 학생 예비군을 위한 채팅 기반 커뮤니티 서비스
   - 링크 : [https://github.com/kwthon-2024](https://github.com/kwthon-2024/Team2_BE)
 
 
 
+- 에코비전(EcoVision)
+
+  `Flutter` `Spring` `AWS`
+
+  - 기간 : 24.08 ~ 24.12
+  - 내용 : 거리 쓰레기 감소를 위한 플로깅 보조 어플리케이션
+  - 링크 : [https://github.com/KW-EcoVision](https://github.com/KW-EcoVision)
+
+
+
 ###  **Github Contributions**
+
 ![github-contributions](https://ghchart.rshah.org/Kyoung-M1N)
+
