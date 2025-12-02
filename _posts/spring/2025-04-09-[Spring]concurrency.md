@@ -12,7 +12,7 @@ tags: [spring, web, java]
 
 ### **동시성(Concurrency)**
 
-동시성은 두 사건이 같은 시간에 발생하는 것을 의미한다.
+동시성은 두 가지 이상의 동일한 사건이 같은 시간에 발생하는 것을 의미한다.
 
 웹 서버는 여러 명의 사용자가 보낸 요청을 동시에 처리하며, 이는 작성한 코드에 의해 구현된 기능이 동시에 작동할 수 있다는 것을 의미한다.
 
@@ -38,7 +38,7 @@ public class LectureController {
 			@PathVariable(name = "lectureId") final long lectureId,
 			@PathVariable(name = "studentId") final long studentId
 	) {
-		lectureService.registStudentToLecture(lectureId, studentId);
+		lectureService.registerStudentToLecture(lectureId, studentId);
 		return ResponseEntity.status(HttpStatus.CREATED).body("수강신청이 완료되었습니다");
 	}
 }
@@ -46,7 +46,7 @@ public class LectureController {
 // service
 public class LectureService {
 	@Transactional
-	public void registStudentToLecture(final long lectureId, final long studentId) {
+	public void registerStudentToLecture(final long lectureId, final long studentId) {
 		Lecture lecture = lectureRepository.findById(lectureId)
 				.orElseThrow(() -> new NullPointerException("강의가 존재하지 않습니다"));
 
@@ -57,7 +57,7 @@ public class LectureService {
 			throw new IllegalArgumentException("이미 수강중인 강의입니다");
 		}
     
-		lecture.registStudent();
+		lecture.registerStudent();
 		
 		lectureStudentRepository.save(LectureStudent.of(student, lecture));
 	}
@@ -70,7 +70,7 @@ public class Lecture {
 	private int remainingSeat;
 	...
 
-	public void registStudent() {
+	public void registerStudent() {
 		if (remainingSeat <= 0) {
 			throw new IllegalArgumentException("잔여 좌석이 없습니다");
 		}
@@ -189,7 +189,7 @@ public class LectureStudent {
 public class LectureService {
   ...
   @Transactional
-	public synchronized void registStudentToLecture(final long lectureId, final long studentId) {
+	public synchronized void registerStudentToLecture(final long lectureId, final long studentId) {
 		if(!studentRepository.existsById(studentId)) {
 			throw new NullPointerException("학생 정보가 존재하지 않습니다");
 		}
@@ -201,7 +201,7 @@ public class LectureService {
 			throw new IllegalArgumentException("이미 수강중인 강의입니다");
 		}
     
-		lecture.registStudent();
+		lecture.registerStudent();
 
 		lectureStudentRepository.save(LectureStudent.of(lectureId, studentId));
 	}
@@ -219,7 +219,7 @@ public class LectureService {
 +----------------+------------+------------+-----------------------+
 ```
 
-하지만 여전히 수강 인원인 20명 보다 많은 인원이 등록되는 것을 확인하였고, 여전히 요청이 병렬로 처리되고 있음을 알 수 있었다.
+하지만 `Lecture_student`테이블에서는 여전히 수강 인원인 20명 보다 많은 인원이 등록되는 것을 확인하였고, 여전히 요청이 병렬로 처리되고 있음을 알 수 있었다.
 
 > `synchronized` 키워드를 사용하면 싱글톤으로 동작하는 스프링 빈의 메서드가 여러 스레드에서 동기화되면서 순차적으로 동작하지만, 현재 스프링 빈에 등록되어 싱글톤으로 동작하는 `LectureService`의 메서드가 병렬로 동작하는 것을 확인할 수 있었다.
 
@@ -244,7 +244,7 @@ public class LectureService {
   			@PathVariable(name = "lectureId") final long lectureId,
   			@PathVariable(name = "studentId") final long studentId
   	) {
-  		lectureService.registStudentToLecture(lectureId, studentId);
+  		lectureService.registerStudentToLecture(lectureId, studentId);
   		return ResponseEntity.status(HttpStatus.CREATED).body("수강신청이 완료되었습니다");
   	}
   }
@@ -255,7 +255,7 @@ public class LectureService {
   ```java
   public class LectureService {
     ...
-  	public synchronized void registStudentToLecture(final long lectureId, final long studentId) {
+  	public synchronized void registerStudentToLecture(final long lectureId, final long studentId) {
   		if(!studentRepository.existsById(studentId)) {
   			throw new NullPointerException("학생 정보가 존재하지 않습니다");
   		}
@@ -267,7 +267,7 @@ public class LectureService {
   			throw new IllegalArgumentException("이미 수강중인 강의입니다");
   		}
       
-  		lecture.registStudent();
+  		lecture.registerStudent();
       // 내부적으로 @Transactional을 사용하는 save를 사용하여 더티체크하고 저장
       lectureRepository.save(lecture);
       
@@ -293,7 +293,7 @@ public class LectureService {
 public class LectureService {
     ...
     @Transactional(isolation = Isolation.SERIALIZABLE)
-	public void registStudentToLecture(final long lectureId, final long studentId) {
+	public void registerStudentToLecture(final long lectureId, final long studentId) {
 		if(!studentRepository.existsById(studentId)) {
 			throw new NullPointerException("학생 정보가 존재하지 않습니다");
 		}
@@ -305,7 +305,7 @@ public class LectureService {
 			throw new IllegalArgumentException("이미 수강중인 강의입니다");
 		}
     
-		lecture.registStudent();
+		lecture.registerStudent();
 
 		lectureStudentRepository.save(LectureStudent.of(lectureId, studentId));
 	}
@@ -319,7 +319,7 @@ public class LectureService {
 
 따라서 데이터베이스에 접근하는 과정에서 레코드에 공유락을 설정하고 외래키 제약조건이 설정된 경우와 같이 공유락을 획득한 여러 트랜잭션이 배타적 락으로의 전환을 대기하며 데드락이 발생하여 교착 상태가 발생한다.
 
-또한 SERIALIZABLE은 데이터베이스에서 발생하는 읽기와 쓰기의 충돌을 방지하기 위해 다른 격리 수준보다 락은 빈번하게 사용할 뿐만 아니라 범위 락까지 사용하기 때문에 다른 격리 수준에 비해 성능이 떨어진다는 문제가 있다.
+또한 SERIALIZABLE은 데이터베이스에서 발생하는 읽기와 쓰기의 충돌을 방지하기 위해 다른 격리 수준보다 락을 빈번하게 사용할 뿐만 아니라 범위 락까지 사용하기 때문에 다른 격리 수준에 비해 성능이 떨어진다는 문제가 있다.
 
 ### **데이터베이스 락 적용**
 
@@ -329,13 +329,13 @@ public class LectureService {
 >
 >  대부분의 트랜잭션이 충돌하지 않는다고 가정하는 방법이다.
 >
->  트랜잭션에 의한 데이터 조작이 시작되기 전에 버전이나 타임스탬프를 기록하고 커밋이 발생하는 시점에서의 버전이나 타임스탬프를 비교하여 충돌을 감지하고, 충돌이 발생하면 트랜잭션의 동작을 재실행한다.
+> 트랜잭션에 의한 데이터 조작이 시작되기 전에 버전이나 타임스탬프를 기록하고 커밋이 발생하는 시점에서의 버전이나 타임스탬프를 비교하여 충돌을 감지하고, 충돌이 발생하면 트랜잭션의 동작을 재실행한다.
 >
 >- 비관적 락(Pessimistic Lock)
 >
 >  대부분의 트랜잭션이 충돌할 것이라고 가정하는 방법이다.
 >
->  개발자가 획득할 락을 직접 설정하고 트랜잭션이 시작과 동시에 개발자가 설정한 종류의 락을 획득하려고 시도하여 트랜잭션 간의 충돌을 방지한다.
+> 개발자가 획득할 락을 직접 설정하고 트랜잭션이 시작과 동시에 개발자가 설정한 종류의 락을 획득하려고 시도하여 트랜잭션 간의 충돌을 방지한다.
 >
 
 - 낙관적 락 이용
@@ -351,7 +351,7 @@ public class LectureService {
   	private Integer version;
   	...
   
-  	public void registStudent() {
+  	public void registerStudent() {
   		if (remainingSeat <= 0) {
   			throw new IllegalArgumentException("잔여 좌석이 없습니다");
   		}
@@ -378,12 +378,12 @@ public class LectureService {
   			recover = "recoverRegist"
   	)
       @Transactional
-  	public void registStudentToLecture(final long lectureId, final long studentId) {
+  	public void registerStudentToLecture(final long lectureId, final long studentId) {
   		...
   	}
       ...
       @Recover
-  	public void recoverRegist(final ObjectOptimisticLockingFailureException e, final long lectureId, final long studentId){
+  	public void recoverRegister(final ObjectOptimisticLockingFailureException e, final long lectureId, final long studentId){
           ...
   	}
   }
@@ -391,7 +391,7 @@ public class LectureService {
 
   재시도 로직을 추가한 뒤에 30명의 학생이 수강 인원이 20명인 강의에 대해 동시에 수강 신청을 하는 경우를 테스트한 결과, 버전 불일치에 의한 커밋 실패에 정상적으로 재시도 로직이 실행되며 동시성 문제가 해결되는 것을 확인할 수 있었다.
 
-  하지만 이는 요청에 대한 처리 결과가 요청 순서에 따라 보장되지 않고, 재시도의 성공 시점까지 포함하기 때문에 요청을 선착순으로 처리한다는 보장을 해주지 못 한다.
+  하지만 이는 요청에 대한 처리 결과가 요청 순서에 따라 보장되지 않고, 재시도의 성공 시점을 포함하기 때문에 요청을 선착순으로 처리한다는 보장을 해주지 못 한다.
 
 - 비관적 락 이용
 
