@@ -132,10 +132,10 @@ Spring의 `@Transactional`은 프록시 기반 AOP이므로 외부 클래스에�
 
 
 
-
-
 -----
 
 ##### 참고자료 :
 
 [https://medium.com/sopt-makers](https://medium.com/sopt-makers/%EB%82%B4%EA%B0%80-%EC%96%B8%EC%A0%9C-2%EB%AA%85%EC%9D%B4-%EB%90%90%EC%A7%80-sopt-%EB%AA%A8%EC%9E%84-%EC%8B%A0%EC%B2%AD-%EB%8F%99%EC%8B%9C%EC%84%B1-%EC%9D%B4%EC%8A%88-%ED%95%B4%EA%B2%B0%EA%B8%B0-7c78105d7be4)
+
+[https://miiiinju.tistory.com](https://miiiinju.tistory.com/27)
