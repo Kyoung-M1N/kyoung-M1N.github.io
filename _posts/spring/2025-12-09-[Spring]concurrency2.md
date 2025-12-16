@@ -121,13 +121,67 @@ Spring의 `@Transactional`은 프록시 기반 AOP이므로 외부 클래스에�
 
 하지만 위의 방법에 대해 성능 지표를 측정한 결과 평균 응답 속도 67ms, 처리량 0.618/sec로 낙관적 락이나 비관적 락보다는 응답 속도가 조금 빠르지만 처리량이 매우 낮은 것을 확인할 수 있었다.
 
-이는 락에 의한 대기가 데이터베이스가 아닌 애플리케이션에서 발생하기 때문임을 추측할 수 있다. 모든 요청을 병렬로 처리한 뒤에 충돌을 감지하는 낙관적 락이나, 공유 자원에 접근하는 쿼리에 대해서만 락을 적용하는 비관적 락에 비해, 재진입 락은 임계 구역으로 지정하는 전체 로직을 순차 처리하기 때문에 처리량이 훨씬 떨어지게 된다.
+이는 락에 의한 대기가 데이터베이스가 아닌 애플리케이션에서 발생하기 때문임을 추측할 수 있다. 재진입 락은 JVM 내부에서 `AbstractQueuedSynchronzier`에 의해 대기되는 스레드가 FIFO 또는 priority queue로 관리되어 디스크 IO나 스케줄러의 동작 등이 발생하지 않는다. 따라서 재진입 락에서의 작업 스레드 전환을 위한 컨텍스트 스위칭 비용이 매우 낮지만, DB락은 트랜잭션 대기로 인한 커넥션 점유로 추가적인 대기가 발생하고 DBMS 내부적으로 스케줄러의 동작 등으로 인해 컨텍스트 스위칭 비용이 높아 상대적으로 응답 속도가 느려지게 된다.
 
-반면에 재진입 락은 JVM 내부에서 `AbstractQueuedSynchronzier`에 의해 대기되는 스레드가 FIFO 또는 priority queue로 관리되어 디스크 IO나 스케줄러의 동작 등이 없어 컨텍스트 스위칭 비용이 매우 낮지만, DB락은 트랜잭션 대기로 인한 커넥션 점유로 추가적인 대기가 발생하고 DBMS 내부적으로 스케줄러의 동작 등으로 인해 컨텍스트 스위칭 비용이 높아 상대적으로 응답 속도가 느려지게 된다.
+반면에 모든 요청을 병렬로 처리한 뒤에 충돌을 감지하는 낙관적 락이나, 공유 자원에 접근하는 쿼리에 대해서만 락을 적용하는 비관적 락에 비해, 재진입 락은 임계 구역으로 지정하는 전체 로직을 순차 처리하기 때문에 처리량이 훨씬 떨어지게 된다.
 
 따라서 이를 해결하기 위해 재진입 락이 적용될 단위를 설정하여 병렬성을 높여주는 것이 바람직하다.
 
 아래와 같이 `ConcurrentHashMap`등을 이용하여 락을 특정 단위 기준으로 묶어주는 방법으로 병렬성을 높일 수 있다.
+
+```java
+@Component
+public class ReentrantLockManager<K> {
+	private final ConcurrentHashMap<K, LockWrapper> locks = new ConcurrentHashMap<>();
+
+	public <T> T executeWithReentrantLock(K lockKey, Supplier<T> task) {
+		return executeInternalWithReentrantLock(lockKey, task);
+	}
+
+	public void executeWithReentrantLock(K lockKey, Runnable task) {
+		executeInternalWithReentrantLock(lockKey, () -> {
+			task.run();
+			return null;
+		});
+	}
+
+	private <T> T executeInternalWithReentrantLock(K lockKey, Supplier<T> task) {
+		LockWrapper wrapper = locks.computeIfAbsent(lockKey, key -> new LockWrapper());
+		boolean isLocked = false;
+
+		wrapper.refCount.getAndIncrement();
+
+		try {
+			isLocked = wrapper.lock.tryLock(5, TimeUnit.SECONDS);
+			if (!isLocked) {
+				throw new RuntimeException("타임아웃으로 인한 락 획득 실패");
+			}
+			return task.get();
+
+		} catch (InterruptedException e) {
+			// 인터럽트 플래그를 복원
+			Thread.currentThread().interrupt();
+			throw new RuntimeException("스레드 인터럽트 발생", e);
+		} finally {
+			if (isLocked) {
+				wrapper.lock.unlock();
+			}
+			if (wrapper.refCount.decrementAndGet() == 0 && !isLocked
+					&& !wrapper.lock.hasQueuedThreads()
+					&& !wrapper.lock.isLocked()) {
+				locks.remove(lockKey, wrapper);
+			}
+		}
+	}
+
+	private static class LockWrapper {
+		// fair를 true로 설정하여 대기 시간이 오래된 요청부터 처리
+		final ReentrantLock lock = new ReentrantLock(true);
+		final AtomicInteger refCount = new AtomicInteger(0);
+	}
+}
+
+```
 
 
 
