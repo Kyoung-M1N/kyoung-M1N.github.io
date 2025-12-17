@@ -183,7 +183,7 @@ public class ReentrantLockManager<K> {
 
 ```
 
-
+위와 같이 키단위로 스레드 동기화를 진행하도록 구현하는 과정에서 주의할 점은 동시성 문제가 발생할 여지가 있는 단위로 동기화 단위를 구성해야한다.
 
 > **`synchronized`와의 차이점**
 >
