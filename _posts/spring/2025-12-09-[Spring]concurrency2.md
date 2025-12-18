@@ -132,6 +132,7 @@ Spring의 `@Transactional`은 프록시 기반 AOP이므로 외부 클래스에�
 ```java
 @Component
 public class ReentrantLockManager<K> {
+	// private final ReentrantLock lock = new ReentrantLock(true);
 	private final ConcurrentHashMap<K, LockWrapper> locks = new ConcurrentHashMap<>();
 
 	public <T> T executeWithReentrantLock(K lockKey, Supplier<T> task) {
@@ -146,6 +147,7 @@ public class ReentrantLockManager<K> {
 	}
 
 	private <T> T executeInternalWithReentrantLock(K lockKey, Supplier<T> task) {
+		// fair를 true로 설정하여 대기 시간이 오래된 요청부터 처리
 		LockWrapper wrapper = locks.computeIfAbsent(lockKey, key -> new LockWrapper());
 		boolean isLocked = false;
 
@@ -166,7 +168,7 @@ public class ReentrantLockManager<K> {
 			if (isLocked) {
 				wrapper.lock.unlock();
 			}
-			if (wrapper.refCount.decrementAndGet() == 0 && !isLocked
+			if (wrapper.refCount.decrementAndGet() == 0
 					&& !wrapper.lock.hasQueuedThreads()
 					&& !wrapper.lock.isLocked()) {
 				locks.remove(lockKey, wrapper);
@@ -175,15 +177,21 @@ public class ReentrantLockManager<K> {
 	}
 
 	private static class LockWrapper {
-		// fair를 true로 설정하여 대기 시간이 오래된 요청부터 처리
 		final ReentrantLock lock = new ReentrantLock(true);
 		final AtomicInteger refCount = new AtomicInteger(0);
 	}
 }
-
 ```
 
-위와 같이 키단위로 스레드 동기화를 진행하도록 구현하는 과정에서 주의할 점은 동시성 문제가 발생할 여지가 있는 단위로 동기화 단위를 구성해야한다.
+위와 같이 키단위로 스레드 동기화를 진행하도록 구현하는 과정에서 주의할 점은 동시성 문제가 발생할 여지가 있는 단위로 동기화 단위를 구성해야한다. 따라서 중복 호출을 제어해야하는 객체 단위, 공유 자원에 접근하는 경우를 파악한 뒤에 적절한 값을 락을 적용하는 단위로 사용해야한다.
+
+30명의 학생이 강의1과 강의 2에 수강 신청을 동시에 요청하는 경우에 대한 성능 지표를 측정한 결과 평균 응답 속도 79ms, 처리량은 51.1/sec로 측정되었다. 재진입 락을 모든 요청에 적용했을 때보다 락의 단위를 강의 기준으로 설정한 경우에 응답 속도와 처리량이 향상됨을 알 수 있다. 특히 처리량은 약 82배 정도의 차이를 보임을 확인할 수 있다.
+
+강의 단위로 락을 분할한 이후에는 DB 커넥션의 동시 활용도가 증가했을 뿐만 아니라, 스레드들이 단일 락에 대기하지 않게 되면서 락 획득·해제 과정에서 발생하던 컨텍스트 스위칭과 스케줄링 오버헤드가 크게 감소하는 효과가 발생한다.
+
+이에 따라 스레드들이 단일 락에 장시간 대기하지 않게 되어 `RUNNABLE`상태와 `BLOCKED`의 상태 전환 빈도가 감소하고, `AbstractQueuedSynchronzier`와 OS에서의 스케줄링과 컨텍스트 스위칭이 감소하게 되며 락 경합에 의한 병목상태가 해소되었기 때문으로 해석할 수 있다.
+
+
 
 > **`synchronized`와의 차이점**
 >
