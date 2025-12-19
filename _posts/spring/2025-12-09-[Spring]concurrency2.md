@@ -191,11 +191,9 @@ public class ReentrantLockManager<K> {
 
 이에 따라 스레드들이 단일 락에 장시간 대기하지 않게 되어 `RUNNABLE`상태와 `BLOCKED`의 상태 전환 빈도가 감소하고, `AbstractQueuedSynchronzier`와 OS에서의 스케줄링과 컨텍스트 스위칭이 감소하게 되며 락 경합에 의한 병목상태가 해소되었기 때문으로 해석할 수 있다.
 
-
-
 > **`synchronized`와의 차이점**
 >
-> 재진입 락은 스레드 간의 동기화를 위해 사용된다는 점에서 `synchronized`와 유사하지만 
+> 재진입 락은 스레드 간의 동기화를 위해 사용된다는 점에서 `synchronized`와 유사하지만 락의
 
 
 
