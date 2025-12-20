@@ -21,21 +21,9 @@ title: About
 
 
 
-### <!--Certifications-->
-
-<!-- 25.09 | 정보처리기사 -->
-
-<!-- 25.09 | SQLD -->
-
-<!-- 25.12 | Opic - IM x -->
-
-
-
 ### Awards
 
 - [2024 KWthon](https://github.com/kwthon-2024) \| 2024 광운대학교 연합 해커톤 대상 \| 24.11
-
-
 
 
 
