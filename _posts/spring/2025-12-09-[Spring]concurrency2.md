@@ -193,7 +193,7 @@ public class ReentrantLockManager<K> {
 
 > **`synchronized`와의 차이점**
 >
-> 재진입 락은 스레드 간의 동기화를 위해 사용된다는 점에서 `synchronized`와 유사하지만 락의
+> 재진입 락은 스레드 간의 동기화를 위해 사용된다는 점에서 `synchronized`와 유사하지만 락 획득의 제어 과정과 동작에서 차이점이 존재한다.
 
 
 
