@@ -49,16 +49,6 @@ title: About
 
 
 
-- 에코비전(EcoVision)
-
-  `Flutter` `Spring` `AWS`
-
-  - 기간 : 24.08 ~ 24.12
-  - 내용 : 거리 쓰레기 감소를 위한 플로깅 보조 어플리케이션
-  - 링크 : [https://github.com/KW-EcoVision](https://github.com/KW-EcoVision)
-
-
-
 ###  **Github Contributions**
 
 ![github-contributions](https://ghchart.rshah.org/Kyoung-M1N)
