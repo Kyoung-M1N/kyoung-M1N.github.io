@@ -31,7 +31,7 @@ title: About
 
 - 봉투백서
 
-  `Spring` `MySQL`  `AWS` `JWT` `Docker` `Redis` `Docker`
+  `Spring` `MySQL`  `AWS` `JWT` `Docker` `Redis`
 
   - 기간 : 25.06 ~ 
   - 내용 : 사회초년생을 위한 맞춤형 경조사비 추천 가이드
