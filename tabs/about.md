@@ -5,14 +5,14 @@ title: About
 
 <!-- > **Note**: Add Markdown syntax content to file `tabs/about.md` and it will show up on this page. -->
 
-### Education
+### **Education**
 
 - [Kwangwoon University](https://www.kw.ac.kr/ko/) \| 전자통신공학과 \| 20.03 - current
 
 
 
 
-### Experience
+### **Experience**
 
 - [SOPT](https://www.sopt.org/) \| 37th 서버 OB \| 25.09 - 26.01
 - [SOPT](https://www.sopt.org/) \| 36th 서버 YB \| 25.03 - 25.07
@@ -21,13 +21,13 @@ title: About
 
 
 
-### Awards
+### **Awards**
 
 - [2024 KWthon](https://github.com/kwthon-2024) \| 2024 광운대학교 연합 해커톤 대상 \| 24.11
 
 
 
-### Projects
+### **Projects**
 
 - 케어나
 
