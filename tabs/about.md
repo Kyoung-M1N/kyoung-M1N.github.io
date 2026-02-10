@@ -9,7 +9,7 @@ title: About
 
 - [Kwangwoon University](https://www.kw.ac.kr/ko/) \| 전자통신공학과 \| 20.03 - current
 
-
+<br>
 
 
 ### **Experience**
@@ -19,13 +19,13 @@ title: About
 - [LikeLion at KWU](https://kwu-likelion.netlify.app/) \| 멋쟁이사자처럼 13기 광운대 부대표 \| 25.02 - 25.12
 - [LikeLion at KWU](https://kwu-likelion.netlify.app/) \|  멋쟁이사자처럼 12기 광운대 백엔드 아기사자 \| 24.03 - 24.12
 
-
+<br>
 
 ### **Awards**
 
 - [2024 KWthon](https://github.com/kwthon-2024) \| 2024 광운대학교 연합 해커톤 대상 \| 24.11
 
-
+<br>
 
 ### **Projects**
 
