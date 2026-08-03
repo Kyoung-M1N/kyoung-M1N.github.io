@@ -14,6 +14,7 @@ title: About
 
 ### **Experience**
 
+- [SOPT](https://www.sopt.org/) \| 39th 서버 파트장 \| 26.07 - 
 - [SOPT](https://www.sopt.org/) \| 36, 37, 38th 서버 \| 25.03 - 26.07
 - [LikeLion at KWU](https://www.likelion-kwu.site) \| 멋쟁이사자처럼 13기 광운대 부대표 \| 25.02 - 25.12
 - [LikeLion at KWU](https://www.likelion-kwu.site) \|  멋쟁이사자처럼 12기 광운대 백엔드 아기사자 \| 24.03 - 24.12
